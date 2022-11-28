@@ -232,3 +232,8 @@ class Test_Create_Config_File(unittest.TestCase):
         back.ui.attr_nameQuery = 'test9b'
         back.ui.filenameQuery = './testcase_files/file_DNE.py'
         self.assertEqual(back.create_config_file(), False, "Should be False")
+
+if __name__ == '__main__':
+    # begin the unittest.main()
+    unittest.main()
+
