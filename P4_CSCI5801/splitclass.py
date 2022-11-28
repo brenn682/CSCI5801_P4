@@ -81,7 +81,7 @@ class UI(tkinter.Tk):
         
         self.instr2 = Label(self, text="Ex: my_code.py")
         self.instr2.place(x=220,y=150)
-        '../splitclass.py'tr_nameQuery.place(x=80, y=150)
+        self.attr_nameQuery.place(x=80, y=150)
         #self.name = attr_name.get()
         #print(attr_name)
         self.enter = Button(self, text="Import!", command=self.backend.attempt_import)
@@ -92,7 +92,7 @@ class UI(tkinter.Tk):
         self.lbl = Label(self, text="Enter Lower Bound (1st Box) and Upper Bound (2nd Box):", fg='blue') # button widget
         self.lbl.place(x=10, y=90)
     
-        lower = '../splitclass.py'enameQuery.place(x=80, y=120)
+        lower = self.attr_nameQuery.place(x=80, y=120)
         
         upper = tkinter.StringVar()
         self.attr_nameQuery.destroy()
@@ -233,7 +233,7 @@ class PPALMS_BACKEND:
                     added to the process' tuple list.
         tuple_lines: Creates the Solution Code folder for the Source Code, the tuples chosen
                     are stored as a list of tuples in the Solution Code's configuration file.
-        choice_made: c'../splitclass.py'      the list of tuples, the LMS selection, and the qType selection. All are located on seperate rows.
+        choice_made: creates a config file with the list of tuples, the LMS selection, and the qType selection. All are located on seperate rows.
     '''
     def __init__(self):
         # super().__init__()
@@ -536,7 +536,7 @@ class PPALMS_BACKEND:
         try:
             attr_name = str(self.name.get())
         except:
-            attr+name = str(self.name)
+            attr_name = str(self.name)
         #print(attr_name)
         
         self.ui.update_sys_msg("Line Tupling: System Messages and\nErrors will appear here")

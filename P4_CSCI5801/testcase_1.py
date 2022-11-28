@@ -7,7 +7,7 @@ import os
 import splitclass
 
 class Test_Attempt_Import(unittest.TestCase):
-    process = PPALMS()
+    process = splitclass.PPALMS()
     back = process.backend
 
     
@@ -30,7 +30,7 @@ class Test_Attempt_Import(unittest.TestCase):
         self.assertEqual(back.attempt_import(), False, "Should be false")
 
 class Test_In_Ex_Lines(unittest.TestCase):
-    process = PPALMS()
+    process = splitclass.PPALMS()
     back = process.backend
     back.ui.attr_nameQuery = 'test2'
     back.ui.filenameQuery = './testcase_files/examplehtml.html'
@@ -56,7 +56,7 @@ class Test_In_Ex_Lines(unittest.TestCase):
         self.assertEqual(back.in_ex_lines(1,11,'Include',10), False, "Should be False")
 
 class Test_Remove_Lines(unittest.TestCase):
-    process = PPALMS()
+    process = splitclass.PPALMS()
     back = process.backend
     
     def test_good(self):
@@ -73,7 +73,7 @@ class Test_Remove_Lines(unittest.TestCase):
         self.assertEqual(back.remove_lines(), False, "Should be False")
 
 class Test_Select_Lines(unittest.TestCase):
-    process = PPALMS()
+    process = splitclass.PPALMS()
     back = process.backend
     
     def test_good(self):
@@ -90,7 +90,7 @@ class Test_Select_Lines(unittest.TestCase):
         self.assertEqual(back.select_lines(), False, "Should be False")
 
 class Test_Make_Tuple(unittest.TestCase):
-    process = PPALMS()
+    process = splitclass.PPALMS()
     back = process.backend
     back.ui.attr_nameQuery = 'test5'
     back.ui.filenameQuery = './testcase_files/examples.py'
@@ -120,7 +120,7 @@ class Test_Make_Tuple(unittest.TestCase):
         self.assertEqual(back.make_tuple(5, 7, 32), False, "Should be False")
 
 class Test_Tuple_Lines(unittest.TestCase):
-    process = PPALMS()
+    process = splitclass.PPALMS()
     back = process.backend
     
     def test_good(self):
@@ -149,7 +149,7 @@ class Test_Tuple_Lines(unittest.TestCase):
         self.assertEqual(back.tuple_lines(), False, "Should be False")
 
 class Test_Choice_Made(unittest.TestCase):
-    process = PPALMS()
+    process = splitclass.PPALMS()
     back = process.backend
     
     def test_LMS_good(self):
@@ -195,7 +195,7 @@ class Test_Choice_Made(unittest.TestCase):
         self.assertEqual(back.choice_made('mode3', sample_options), False, "Should be False")
 
 class Test_QType_Select(unittest.TestCase):
-    process = PPALMS()
+    process = splitclass.PPALMS()
     back = process.backend
     
     def test_good(self):
@@ -213,7 +213,7 @@ class Test_QType_Select(unittest.TestCase):
         self.assertEqual(back.qType_select(), False, "Should be False")
 
 class Test_Create_Config_File(unittest.TestCase):
-    process = PPALMS()
+    process = splitclass.PPALMS()
     back = process.backend
     back.tuples = [(1,2),(3,4)]
     back.sol_folder_name = 'primeNum'
