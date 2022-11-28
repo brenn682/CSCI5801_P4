@@ -169,7 +169,7 @@ class UI(tkinter.Tk):
             self.filenameQuery.config(textvariable=self.backend.LMS_choice)
         else:
             self.lbl.config(text = "Type the Question Type selection from the given options")
-            self.next_step.config(text="Finish", command=self.backend.finish_process)
+            self.next_step.config(text="Finish", command=self.backend.finish_ui)
             self.backend.qType_choice = tkinter.StringVar()
             self.filenameQuery.config(textvariable=self.backend.qType_choice)
 
@@ -187,7 +187,20 @@ class UI(tkinter.Tk):
             pass
         
     def finish_ui(self): #display a celebratory message
-        return
+        try:
+            self.lbl.destroy()
+            self.instr1.destroy()
+            self.instr2.destroy()
+            self.filenameQuery.destroy()
+            self.attr_nameQuery.destroy()
+            self.enter.destroy()
+            self.enter2.destroy()
+            self.display.destroy()
+            self.next_step.destroy()
+        except:
+            pass
+        self.update_sys_msg(text="PPALMS is now generating your problem set. :)")
+        return True
 
 class PPALMS_BACKEND:
     '''
@@ -607,7 +620,8 @@ class PPALMS_BACKEND:
                 self.ui.update_sys_msg("Error: Question Type selection is not valid.")
                 return False
             else:
-                print("Valid choice, call 'self.finish_process'")
+                print("Valid choice, call 'self.finish_ui'")
+                self.ui.finish_ui()
                 return True
         else:
             print('invalid mode')
