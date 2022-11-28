@@ -128,25 +128,25 @@ class Test_Tuple_Lines(unittest.TestCase):
         back.ui.attr_nameQuery = 'test6a'
         back.ui.filenameQuery = './testcase_files/primeNum.cc'
 
-        self.assertEqual(back.attempt_import(), True, "Should be true")
+        self.assertEqual(back.tuple_lines, True, "Should be true")
     
     def test_os_error(self):
         # set conditions here
         back.ui.attr_nameQuery = 'boink'
         back.ui.filenameQuery = './testcase_files/primeNum.cc'
-        self.assertEqual(back.attempt_import(), False, "Should be False")
+        self.assertEqual(back.tuple_lines(), False, "Should be False")
 
     def test_file_not_found_source(self):
         # set conditions here
         back.ui.attr_nameQuery = 'test6c'
         back.ui.filenameQuery = './testcase_files/file_DNE.py'
-        self.assertEqual(back.attempt_import(), False, "Should be False")
+        self.assertEqual(back.tuple_lines(), False, "Should be False")
 
     def test_file_not_found_solution(self):
         # set conditions here
         back.ui.attr_nameQuery = 'test6d'
         back.ui.filenameQuery = './solution_code/file_DNE/file_DNE.py'
-        self.assertEqual(back.attempt_import(), False, "Should be False")
+        self.assertEqual(back.tuple_lines(), False, "Should be False")
 
 class Test_Choice_Made(unittest.TestCase):
     process = PPALMS()
