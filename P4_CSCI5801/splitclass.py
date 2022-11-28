@@ -396,7 +396,11 @@ class PPALMS_BACKEND:
         '''
         solution_code = ''
         count = 0
-        attr_name = self.name.get()
+        attr_name = ''
+        try:
+            attr_name = self.name.get()
+        except:
+            attr_name = self.name
         print("updating: %s" % (attr_name))
         try:
             with open(('./source_code/'+attr_name), 'r') as fp:
@@ -427,12 +431,17 @@ class PPALMS_BACKEND:
                 for tupling. After displaying the source code file, the UI method for
                 creating this step's page is called. From there, in_ex_lines is called
                 when the user inputs values.
-        Return: True upon fully sucessful opening of the source code file and reading the lines for display.
+        Return: True upon fully successful opening of the source code file and reading the lines for display.
                 False if:
                     - FileNotFound error is raised
                     - Unexpected error occurs while reading the lines from the open file
         '''
-        attr_name = self.ui.attr_nameQuery.get()  # stores the name of the file that the
+        attr_name = ''
+        try:
+            attr_name = self.ui.attr_nameQuery.get()  # stores the name of the file that the
+        except:
+            attr_name = self.ui.attr_nameQuery
+
         try:    # FLAG FOR BUGS                   # user imported
             self.ui.next_step.destroy()
         except:
@@ -467,6 +476,7 @@ class PPALMS_BACKEND:
             return False
 
         self.ui.line_time(length)
+        return True
         
     def make_tuple(self, first, second, length): # TO DO: INPUT TESTING
         '''
@@ -522,7 +532,11 @@ class PPALMS_BACKEND:
         solution_code = ''
         display_text = ''
         tuples = []
-        attr_name = str(self.name.get())
+        attr_name = ''
+        try:
+            attr_name = str(self.name.get())
+        except:
+            attr+name = str(self.name)
         #print(attr_name)
         
         self.ui.update_sys_msg("Line Tupling: System Messages and\nErrors will appear here")
@@ -612,6 +626,7 @@ class PPALMS_BACKEND:
                 return False
             else:
                 print("Valid choice, call 'self.qType_select'")
+                self.qType_select()
                 return True
         elif mode == 'qType':
             selection = self.qType_choice.get()
