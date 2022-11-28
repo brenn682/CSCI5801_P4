@@ -603,7 +603,7 @@ class PPALMS_BACKEND:
             pass
         #print("tuple_lines:")
 
-    def choice_made(self, mode, options):
+    def choice_made(self, mode, options = []):
         '''
         Purpose: helper function to LMS_select and qType_select. confirms the validity of the choice the user made.
         Parameters:
@@ -619,8 +619,11 @@ class PPALMS_BACKEND:
         
         selection = ''
         if mode == 'LMS':
-            selection = self.LMS_choice.get()
-            selection = selection.lower()
+            try:
+                selection = self.LMS_choice.get()
+                selection = selection.lower()
+            except:
+                selection = self.LMS_choice
             if selection != 'blackboard' and selection != 'canvas' and selection != 'moodle':
                 self.ui.update_sys_msg("Error: LMS selection is not valid.")
                 return False
@@ -629,8 +632,11 @@ class PPALMS_BACKEND:
                 self.qType_select()
                 return True
         elif mode == 'qType':
-            selection = self.qType_choice.get()
-            selection = selection.lower()
+            try:
+                selection = self.qType_choice.get()
+                selection = selection.lower()
+            except:
+                selection = self.qType_choice
             if selection not in options:
                 self.ui.update_sys_msg("Error: Question Type selection is not valid.")
                 return False
@@ -665,13 +671,13 @@ class PPALMS_BACKEND:
         options = []
         
         if self.LMS_choice == 'blackboard':
-            print(self.LMS_choice)
+            #print(self.LMS_choice)
             options = ['multiple choice','fill-in-the-blank','reordering','find the bug']
         elif self.LMS_choice == 'canvas':
-            print(self.LMS_choice)
+            #print(self.LMS_choice)
             options = ['multiple choice','fill-in-the-blank','reordering','find the bug', 'indentation']
         elif self.LMS_choice == 'moodle':
-            print(self.LMS_choice)
+            #print(self.LMS_choice)
             options = ['multiple choice','reordering','fill-in-the-blank','find the bug','indentation']
         else:
             print("Unexpected error in qType_select: LMS_choice is not valid")
@@ -697,7 +703,7 @@ class PPALMS_BACKEND:
             # attr_name = self.name.get()
             cwd = os.getcwd()
             cwd+='/solution_code/'+self.sol_folder_name
-            os.mkdir(cwd)
+            #os.mkdir(cwd)  # audrey: commented out 11/28 4:21pm
             #print(self.sol_folder_name)
             with open(cwd+'/config.txt','w') as fp:
                 fp.write(self.LMS_choice+'\n')

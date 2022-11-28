@@ -152,24 +152,47 @@ class Test_Choice_Made(unittest.TestCase):
     process = PPALMS()
     back = process.backend
     
-    def test_good(self):
+    def test_LMS_good(self):
         # set conditions here
-        back.ui.attr_nameQuery = 'test1'
-        back.ui.filenameQuery = './test1.py'
+        back.ui.attr_nameQuery = 'test7a'
+        back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        back.LMS_choice = 'canvas'
+        self.assertEqual(back.choice_made('LMS', []), True, "Should be true")
 
-        self.assertEqual(back.attempt_import(), True, "Should be true")
+    def test_qType_good(self):
+        # set conditions here
+        back.ui.attr_nameQuery = 'test7b'
+        back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        back.LMS_choice = 'canvas'
+        back.qType_choice = 'multiple choice'
+        sample_options = ['multiple choice','reordering','fill-in-the-blank','find the bug','indentation']
+        self.assertEqual(back.choice_made('qType', sample_options), True, "Should be true")
     
-    def test_choice_invalid(self):
+    def test_LMS_choice_invalid(self):
         # set conditions here
-        back.ui.attr_nameQuery = 'test1'
-        back.ui.filenameQuery = 'file_DNE.py'
-        self.assertEqual(back.attempt_import(), False, "Should be False")
+        back.ui.attr_nameQuery = 'test7c'
+        back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        back.LMS_choice = 'wrong_option' # erroneous
+        self.assertEqual(back.choice_made('LMS', []), False, "Should be False")
 
-    def test_monde_parameter_invalid(self):
+    def test_qType_choice_invalid(self):
         # set conditions here
-        back.ui.attr_nameQuery = 'test1'
-        back.ui.filenameQuery = 'file_DNE.py'
-        self.assertEqual(back.attempt_import(), False, "Should be False")
+        back.ui.attr_nameQuery = 'test7d'
+        back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        sample_options = ['multiple choice','reordering','fill-in-the-blank','find the bug','indentation']
+        back.LMS_choice = 'moodle'
+        back.qType_choice = 'invalid_option' # erroneous
+        self.assertEqual(back.choice_made('qType', sample_options), False, "Should be False")
+
+    def test_mode_parameter_invalid(self):
+        # set conditions here
+        back.ui.attr_nameQuery = 'test7e'
+        back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        sample_options = ['multiple choice','reordering','fill-in-the-blank','find the bug','indentation']
+        back.LMS_choice = 'moodle'
+        back.qType_choice = 'reordering'
+        # 'mode3' is erroneous
+        self.assertEqual(back.choice_made('mode3', sample_options), False, "Should be False")
 
 class Test_QType_Select(unittest.TestCase):
     process = PPALMS()
@@ -177,30 +200,35 @@ class Test_QType_Select(unittest.TestCase):
     
     def test_good(self):
         # set conditions here
-        back.ui.attr_nameQuery = 'test1'
-        back.ui.filenameQuery = './test1.py'
-
-        self.assertEqual(back.attempt_import(), True, "Should be true")
+        back.ui.attr_nameQuery = 'test8a'
+        back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        back.LMS_choice = 'blackboard'
+        self.assertEqual(back.qType_select(), True, "Should be true")
     
     def test_LMS_invalid(self):
         # set conditions here
-        back.ui.attr_nameQuery = 'test1'
-        back.ui.filenameQuery = 'file_DNE.py'
-        self.assertEqual(back.attempt_import(), False, "Should be False")
+        back.ui.attr_nameQuery = 'test8b'
+        back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        back.LMS_choice = 'oops'
+        self.assertEqual(back.qType_select(), False, "Should be False")
 
-class Test_QType_Select(unittest.TestCase):
+class Test_Create_Config_File(unittest.TestCase):
     process = PPALMS()
     back = process.backend
+    back.tuples = [(1,2),(3,4)]
+    back.sol_folder_name = 'primeNum'
+    back.qType_choice = 'indentation'
+    back.LMS_choice = 'canvas'
     
     def test_good(self):
         # set conditions here
-        back.ui.attr_nameQuery = 'test1'
-        back.ui.filenameQuery = './test1.py'
+        back.ui.attr_nameQuery = 'test9a'
+        back.ui.filenameQuery = './testcase_files/primeNum.cc'
 
-        self.assertEqual(back.attempt_import(), True, "Should be true")
+        self.assertEqual(back.create_config_file(), True, "Should be true")
     
     def test_file_not_found(self):
         # set conditions here
-        back.ui.attr_nameQuery = 'test1'
-        back.ui.filenameQuery = 'file_DNE.py'
-        self.assertEqual(back.attempt_import(), False, "Should be False")
+        back.ui.attr_nameQuery = 'test9b'
+        back.ui.filenameQuery = './testcase_files/file_DNE.py'
+        self.assertEqual(back.create_config_file(), False, "Should be False")
