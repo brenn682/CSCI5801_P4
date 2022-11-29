@@ -14,43 +14,53 @@ class Test_Attempt_Import(unittest.TestCase):
         # set conditions here
         back.ui.attr_nameQuery = 'test1a'
         back.ui.filenameQuery = './testcase_files/addNums.cc'
-        self.assertEqual(back.attempt_import(), True, "Should be true")
-    
+        print("Test_Attempt_Import (test_good) errors: ")
+        print(self.assertEqual(back.attempt_import(), True, "Should be true"))
+            
     def test_non_ascii(self):
         # set conditions here
         back.ui.attr_nameQuery = 'test1b'
         back.ui.filenameQuery = './testcase_files/slick.bin'
-        self.assertEqual(back.attempt_import(), False, "Should be false")
+        print("Test_Attempt_Import (test_non_ascii) errors: ")
+        print(self.assertEqual(back.attempt_import(), False, "Should be false"))
 
     def test_file_not_found(self):
         # set conditions here
         back.ui.attr_nameQuery = 'test1c'
         back.ui.filenameQuery = './testcase_files/file_DNE.py'
-        self.assertEqual(back.attempt_import(), False, "Should be false")
+        print("Test_Attempt_Import (test_file_not_found) errors: ")
+        print(self.assertEqual(back.attempt_import(), False, "Should be false"))
 
 class Test_In_Ex_Lines(unittest.TestCase):
     back.ui.attr_nameQuery = 'test2'
     back.ui.filenameQuery = './testcase_files/examplehtml.html'
 
+    print("\n\n")
+
     def test_good(self):
         # set conditions here
-        self.assertEqual(back.in_ex_lines(1,2,'Include',10), True, "Should be true")
+        print("Test_In_Ex_Lines (test_good) errors: ")
+        print(self.assertEqual(back.in_ex_lines(1,2,'Include',10), True, "Should be true"))
     
     def test_empty_field(self):
         # set conditions here
-        self.assertEqual(back.in_ex_lines('',2,'Include',10), False, "Should be False")
+        print("Test_In_Ex_Lines (test_empty_field) errors: ")
+        print(self.assertEqual(back.in_ex_lines('',2,'Include',10), False, "Should be False"))
 
     def test_up_ld_low(self):
         # set conditions here
-        self.assertEqual(back.in_ex_lines(2,1,'Include',10), False, "Should be False")
+        print("Test_In_Ex_Lines (test_up_ld_low) errors: ")
+        print(self.assertEqual(back.in_ex_lines(2,1,'Include',10), False, "Should be False"))
 
     def test_low_oob(self):
         # set conditions here
-        self.assertEqual(back.in_ex_lines(-1,2,'Include',10), False, "Should be False")
+        print("Test_In_Ex_Lines (test_low_oob) errors: ")
+        print(self.assertEqual(back.in_ex_lines(-1,2,'Include',10), False, "Should be False"))
 
     def test_high_oob(self):
         # set conditions here
-        self.assertEqual(back.in_ex_lines(1,11,'Include',10), False, "Should be False")
+        print("Test_In_Ex_Lines (test_high_oob) errors: ")
+        print(self.assertEqual(back.in_ex_lines(1,11,'Include',10), False, "Should be False"))
 
 class Test_Remove_Lines(unittest.TestCase):
     def test_good(self):
@@ -215,7 +225,7 @@ class Test_Create_Config_File(unittest.TestCase):
 if __name__ == '__main__':
     # begin the unittest.main()
 
-    # redirect output from just stdout/stderr to file names "test_output.txt"
+    # redirect output from just stdout/stderr to file names 
     import sys
 
     class Tee:
