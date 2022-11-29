@@ -214,24 +214,30 @@ class Test_Create_Config_File(unittest.TestCase):
 
 if __name__ == '__main__':
     # begin the unittest.main()
+
+    # redirect output from just stdout/stderr to file names "test_output.txt"
+    import sys
+
+    class Tee:
+        def __init__(self, stream1, stream2):
+            self.stream1 = stream1
+            self.stream2 = stream2
+
+        def write(self, data):
+            self.stream1.write(data)
+            self.stream2.write(data)
+
+        def close(self):
+            self.stream1.close()
+            self.stream2.close()
+
+        def flush(self):
+            self.stream1.flush()
+            self.stream2.flush()
+
+    tee = Tee(sys.stdout, open("test_output.txt", 'w'))
+    sys.stdout = tee
+
     unittest.main()
 
-    # demo_test = unittest.TestLoader().loadTestsFromTestCase(Test_Attempt_Import)
-    # unittest.TextTestRunner(stream=sys.stdout).run(demo_test)
-    # demo_test = unittest.TestLoader().loadTestsFromTestCase(Test_In_Ex_Lines)
-    # unittest.TextTestRunner(stream=sys.stdout).run(demo_test)
-    # demo_test = unittest.TestLoader().loadTestsFromTestCase(Test_Remove_Lines)
-    # unittest.TextTestRunner(stream=sys.stdout).run(demo_test)
-    # demo_test = unittest.TestLoader().loadTestsFromTestCase(Test_Select_Lines)
-    # unittest.TextTestRunner(stream=sys.stdout).run(demo_test)
-    # demo_test = unittest.TestLoader().loadTestsFromTestCase(Test_Make_Tuple)
-    # unittest.TextTestRunner(stream=sys.stdout).run(demo_test)
-    # demo_test = unittest.TestLoader().loadTestsFromTestCase(Test_Tuple_Lines)
-    # unittest.TextTestRunner(stream=sys.stdout).run(demo_test)
-    # demo_test = unittest.TestLoader().loadTestsFromTestCase(Test_Choice_Made)
-    # unittest.TextTestRunner(stream=sys.stdout).run(demo_test)
-    # demo_test = unittest.TestLoader().loadTestsFromTestCase(Test_QType_Select)
-    # unittest.TextTestRunner(stream=sys.stdout).run(demo_test)
-    # demo_test = unittest.TestLoader().loadTestsFromTestCase(Test_Create_Config_File)
-    # unittest.TextTestRunner(stream=sys.stdout).run(demo_test)
-
+    tee.close()
