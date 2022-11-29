@@ -6,11 +6,10 @@ import unittest
 import os
 import splitclass
 
-class Test_Attempt_Import(unittest.TestCase):
-    process = splitclass.PPALMS()
-    back = process.backend
+process = splitclass.PPALMS()
+back = process.backend
 
-    
+class Test_Attempt_Import(unittest.TestCase):
     def test_good(self):
         # set conditions here
         back.ui.attr_nameQuery = 'test1a'
@@ -30,8 +29,6 @@ class Test_Attempt_Import(unittest.TestCase):
         self.assertEqual(back.attempt_import(), False, "Should be false")
 
 class Test_In_Ex_Lines(unittest.TestCase):
-    process = splitclass.PPALMS()
-    back = process.backend
     back.ui.attr_nameQuery = 'test2'
     back.ui.filenameQuery = './testcase_files/examplehtml.html'
 
@@ -56,13 +53,11 @@ class Test_In_Ex_Lines(unittest.TestCase):
         self.assertEqual(back.in_ex_lines(1,11,'Include',10), False, "Should be False")
 
 class Test_Remove_Lines(unittest.TestCase):
-    process = splitclass.PPALMS()
-    back = process.backend
-    
     def test_good(self):
         # set conditions here
         back.ui.attr_nameQuery = 'test3a'
-        back.ui.filenameQuery = './testcase_files/helloworld/js'
+        back.name = 'helloworld.js'
+        back.ui.filenameQuery = './testcase_files/helloworld.js'
 
         self.assertEqual(back.remove_lines(), True, "Should be true")
     
@@ -73,9 +68,6 @@ class Test_Remove_Lines(unittest.TestCase):
         self.assertEqual(back.remove_lines(), False, "Should be False")
 
 class Test_Select_Lines(unittest.TestCase):
-    process = splitclass.PPALMS()
-    back = process.backend
-    
     def test_good(self):
         # set conditions here
         back.ui.attr_nameQuery = 'test4a'
@@ -90,8 +82,6 @@ class Test_Select_Lines(unittest.TestCase):
         self.assertEqual(back.select_lines(), False, "Should be False")
 
 class Test_Make_Tuple(unittest.TestCase):
-    process = splitclass.PPALMS()
-    back = process.backend
     back.ui.attr_nameQuery = 'test5'
     back.ui.filenameQuery = './testcase_files/examples.py'
     
@@ -113,45 +103,35 @@ class Test_Make_Tuple(unittest.TestCase):
 
     def test_snd_oob(self):
         # set conditions here
-        self.assertEqual(back.make_tuple(31, 32, 32), False, "Should be False")
+        self.assertEqual(back.make_tuple(32, 33, 32), False, "Should be False")
 
     def test_adj_error(self):
         # set conditions here
         self.assertEqual(back.make_tuple(5, 7, 32), False, "Should be False")
 
 class Test_Tuple_Lines(unittest.TestCase):
-    process = splitclass.PPALMS()
-    back = process.backend
-    
     def test_good(self):
         # set conditions here
         back.ui.attr_nameQuery = 'test6a'
-        back.ui.filenameQuery = './testcase_files/primeNum.cc'
-
-        self.assertEqual(back.tuple_lines, True, "Should be true")
+        back.ui.filenameQuery = './testcase_files/examplewcss.html'
+        back.name = 'examplewcss.html'
+        self.assertEqual(back.tuple_lines(), True, "Should be true")
     
-    def test_os_error(self):
-        # set conditions here
-        back.ui.attr_nameQuery = 'boink'
-        back.ui.filenameQuery = './testcase_files/primeNum.cc'
-        self.assertEqual(back.tuple_lines(), False, "Should be False")
-
     def test_file_not_found_source(self):
         # set conditions here
         back.ui.attr_nameQuery = 'test6c'
+        back.name = 'file_DNE.py'
         back.ui.filenameQuery = './testcase_files/file_DNE.py'
         self.assertEqual(back.tuple_lines(), False, "Should be False")
 
     def test_file_not_found_solution(self):
         # set conditions here
         back.ui.attr_nameQuery = 'test6d'
+        back.name = 'file_DNE.py'
         back.ui.filenameQuery = './solution_code/file_DNE/file_DNE.py'
         self.assertEqual(back.tuple_lines(), False, "Should be False")
 
 class Test_Choice_Made(unittest.TestCase):
-    process = splitclass.PPALMS()
-    back = process.backend
-    
     def test_LMS_good(self):
         # set conditions here
         back.ui.attr_nameQuery = 'test7a'
@@ -195,9 +175,6 @@ class Test_Choice_Made(unittest.TestCase):
         self.assertEqual(back.choice_made('mode3', sample_options), False, "Should be False")
 
 class Test_QType_Select(unittest.TestCase):
-    process = splitclass.PPALMS()
-    back = process.backend
-    
     def test_good(self):
         # set conditions here
         back.ui.attr_nameQuery = 'test8a'
@@ -213,15 +190,13 @@ class Test_QType_Select(unittest.TestCase):
         self.assertEqual(back.qType_select(), False, "Should be False")
 
 class Test_Create_Config_File(unittest.TestCase):
-    process = splitclass.PPALMS()
-    back = process.backend
-    back.tuples = [(1,2),(3,4)]
-    back.sol_folder_name = 'primeNum'
-    back.qType_choice = 'indentation'
-    back.LMS_choice = 'canvas'
     
     def test_good(self):
         # set conditions here
+        back.tuples = [(1,2),(3,4)]
+        back.sol_folder_name = 'primeNum'
+        back.qType_choice = 'indentation'
+        back.LMS_choice = 'canvas'
         back.ui.attr_nameQuery = 'test9a'
         back.ui.filenameQuery = './testcase_files/primeNum.cc'
 
@@ -229,6 +204,10 @@ class Test_Create_Config_File(unittest.TestCase):
     
     def test_file_not_found(self):
         # set conditions here
+        back.tuples = [(1,2),(3,4)]
+        back.sol_folder_name = 'green_eggs'
+        back.qType_choice = 'indentation'
+        back.LMS_choice = 'canvas'
         back.ui.attr_nameQuery = 'test9b'
         back.ui.filenameQuery = './testcase_files/file_DNE.py'
         self.assertEqual(back.create_config_file(), False, "Should be False")

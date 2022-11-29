@@ -163,22 +163,31 @@ class UI(tkinter.Tk):
         options_text = ''
         
         if mode == 'LMS':
-            self.lbl.config(text = "Type the LMS selection from the given options")
-            self.next_step.config(text="Q Type Selection", command=self.backend.qType_select)
-            self.backend.LMS_choice = tkinter.StringVar()
-            self.filenameQuery.config(textvariable=self.backend.LMS_choice)
+            try:
+                self.lbl.config(text = "Type the LMS selection from the given options")
+                self.next_step.config(text="Q Type Selection", command=self.backend.qType_select)
+                self.backend.LMS_choice = tkinter.StringVar()
+                self.filenameQuery.config(textvariable=self.backend.LMS_choice)
+            except: # no UI needs to be altered
+                pass
         else:
-            self.lbl.config(text = "Type the Question Type selection from the given options")
-            self.next_step.config(text="Finish", command=self.backend.finish_ui)
-            self.backend.qType_choice = tkinter.StringVar()
-            self.filenameQuery.config(textvariable=self.backend.qType_choice)
+            try:
+                self.lbl.config(text = "Type the Question Type selection from the given options")
+                self.next_step.config(text="Finish", command=self.backend.finish_ui)
+                self.backend.qType_choice = tkinter.StringVar()
+                self.filenameQuery.config(textvariable=self.backend.qType_choice)
+            except:
+                pass
 
         for i in options:
             options_text+=i+' | '
 
-        self.instr1.config(text=options_text)
+        try: # in unit testing, these are ignored
+            self.instr1.config(text=options_text)
 
-        self.enter.config(text="Enter Selection", command=lambda: self.backend.choice_made(mode, options))
+            self.enter.config(text="Enter Selection", command=lambda: self.backend.choice_made(mode, options))
+        except:
+            pass
 
         try:
             self.instr2.destroy()
@@ -199,7 +208,7 @@ class UI(tkinter.Tk):
             self.next_step.destroy()
         except:
             pass
-        self.update_sys_msg(text="PPALMS is now generating your problem set. :)")
+        self.update_sys_msg("PPALMS is now generating your problem set. :)")
         return True
 
 class PPALMS_BACKEND:
@@ -304,11 +313,11 @@ class PPALMS_BACKEND:
                         count += 1
             except FileNotFoundError:
                 self.ui.update_sys_msg("Error: File does not exist")
-                print("That file does not exist")
+                # print("That file does not exist")
                 return False
             except:
                 self.ui.update_sys_msg("Error: an unexpected import error has occurred")
-                print("attempt_import: An unexpected import error has occurred")
+                # print("attempt_import: An unexpected import error has occurred")
                 return False
             if display_text != '':
                 self.ui.make_display(display_text,False)
@@ -401,15 +410,21 @@ class PPALMS_BACKEND:
             attr_name = self.name.get()
         except:
             attr_name = self.name
-        print("updating: %s" % (attr_name))
+        # print("updating: %s" % (attr_name))
         try:
-            with open(('./source_code/'+attr_name), 'r') as fp:
+            cwd = os.getcwd()
+            cwd+= '/source_code/'+attr_name
+            # print("attr_name: "+attr_name) 
+            # print(cwd)
+            if os.path.isfile(cwd) == False:
+                raise FileNotFoundError
+            with open(cwd, 'r') as fp:
                 #print("including: %s" % (self.include))
                 #print("excluding: %s" % (self.exclude))
                 text_lines = fp.readlines()
                 for i in range(len(text_lines)):
                     if i in self.include or (i not in self.include and i not in self.exclude): # line was included and not specifically excluded
-                        print("including: %s" % (text_lines[i]))
+                        # print("including: %s" % (text_lines[i]))
                         solution_code += text_lines[i]
                         count+=1
             fp.close()
@@ -417,12 +432,12 @@ class PPALMS_BACKEND:
             self.sol_code_len = count
             with open(('./source_code/'+attr_name), 'w') as updated_fp:
                 updated_fp.write(solution_code)
-                print(self.sol_code_len)
+                # print(self.sol_code_len)
             updated_fp.close()
             return True
         except FileNotFoundError:
-            self.update_sys_msg("Error: File does not exist")
-            print("remove_lines: That file does not exist")
+            self.ui.update_sys_msg("Error: File does not exist")
+            #print("remove_lines: That file does not exist")
             return False
 
     def select_lines(self):
@@ -455,7 +470,7 @@ class PPALMS_BACKEND:
         
         try:
             #print("opening file...")
-            #print(attr_name)
+            print(attr_name)
             with open(('./source_code/'+attr_name), 'r') as fp:
                 text_lines = fp.readlines()
                 length = len(text_lines)
@@ -468,14 +483,18 @@ class PPALMS_BACKEND:
             #print("file is closed")
         except FileNotFoundError:
             self.ui.update_sys_msg("Error: File does not exist")
-            print("select_lines: That file does not exist")
+            # print("select_lines: That file does not exist")
             return False
         except:
             self.ui.update_sys_msg("Error: Unexpected error in select_lines")
-            print("select_lines: An error has occurred")
+            # print("select_lines: An error has occurred")
             return False
 
-        self.ui.line_time(length)
+        try: # should not run if in unit testing mo
+            self.ui.line_time(length)
+        except: 
+            pass
+
         return True
         
     def make_tuple(self, first, second, length): # TO DO: INPUT TESTING
@@ -513,7 +532,7 @@ class PPALMS_BACKEND:
             if (first,second) not in self.tuples:
                 self.ui.update_sys_msg("Success: tuple (%s,%s) added" % (first,second))
                 self.tuples.append((first,second))
-                print(self.tuples)
+                # print(self.tuples)
             return True
 
     def tuple_lines(self):
@@ -537,11 +556,12 @@ class PPALMS_BACKEND:
             attr_name = str(self.name.get())
         except:
             attr_name = str(self.name)
-        #print(attr_name)
+        # print(attr_name)
         
         self.ui.update_sys_msg("Line Tupling: System Messages and\nErrors will appear here")
         
         self.remove_lines()
+
         
         #print(len(attr_name))
         try:
@@ -558,30 +578,34 @@ class PPALMS_BACKEND:
             #print(folder_name)
 
             self.sol_folder_name = folder_name
-            print(self.sol_folder_name)
-            
-            self.ui.tuple_ui()
+            # print(self.sol_folder_name)
+            try: # does not need to run during unit testing
+                self.ui.tuple_ui()
+            except:
+                pass
 
             # Make our directory and write the tuple / exclusion file
             cwd = os.getcwd()
             cwd+='/solution_code/'+folder_name
+            #print(cwd)
             try:
                 os.mkdir(cwd)
                 new_file = open((cwd+"/"+attr_name),"w")
                 new_file.write(solution_code)
                 new_file.close()
             except OSError:
-                self.update_sys_msg("Error: solution code under that name already exists")
-                return False
-                # print("Error: solution code under that name already exists")
+                self.ui.update_sys_msg("Warning: solution code under that name already exists")
+                #print("Error: solution code under that name already exists")
+                pass
 
             self.ui.make_display(display_text,True)
 
             try:
                 #print("opening file...")
-                #print(attr_name)
+                print("opening attr " + attr_name)
                 with open(('./source_code/'+attr_name), 'r') as fp:
-                    with open(('./solution_code/'+folder_name+'/'+attr_name), 'w') as solution_fp:
+                    print("folder name: " + self.sol_folder_name)
+                    with open(('./solution_code/'+self.sol_folder_name+'/'+attr_name), 'w') as solution_fp:
                         text_lines = fp.readlines()
                         length = len(text_lines)
                         #print("read done")
@@ -596,10 +620,10 @@ class PPALMS_BACKEND:
                 #print("file is closed")
             except FileNotFoundError:
                 self.ui.update_sys_msg("Error: File does not exist")
-                print("That file does not exist")
+                print("Tuple Lines: %s does not exist" % (attr_name))
                 return False
         except ValueError: # this is simply a warning, still runs as expected in the system
-            print("filename doesnt have extension")
+            # print("filename doesnt have extension")
             pass
         #print("tuple_lines:")
 
@@ -628,7 +652,7 @@ class PPALMS_BACKEND:
                 self.ui.update_sys_msg("Error: LMS selection is not valid.")
                 return False
             else:
-                print("Valid choice, call 'self.qType_select'")
+                # print("Valid choice, call 'self.qType_select'")
                 self.qType_select()
                 return True
         elif mode == 'qType':
@@ -641,11 +665,11 @@ class PPALMS_BACKEND:
                 self.ui.update_sys_msg("Error: Question Type selection is not valid.")
                 return False
             else:
-                print("Valid choice, call 'self.finish_ui'")
+                # print("Valid choice, call 'self.finish_ui'")
                 self.ui.finish_ui()
                 return True
         else:
-            print('invalid mode')
+            # print('invalid mode')
             return False
         
 
@@ -658,7 +682,7 @@ class PPALMS_BACKEND:
 
         self.ui.selection_ui('LMS',['Blackboard','Canvas','Moodle'])
 
-        print("In LMS_select")
+        # print("In LMS_select")
         return True
 
     def qType_select(self): # set up the making of the configuration file
@@ -680,13 +704,13 @@ class PPALMS_BACKEND:
             #print(self.LMS_choice)
             options = ['multiple choice','reordering','fill-in-the-blank','find the bug','indentation']
         else:
-            print("Unexpected error in qType_select: LMS_choice is not valid")
+            # print("Unexpected error in qType_select: LMS_choice is not valid")
             return False
 
         self.ui.selection_ui('qType',options)
         
-        print("In qType_select")
-        print(options)
+        # print("In qType_select")
+        # print(options)
         return True
 
     def create_config_file(self): # to do, make configuration file that contains list of tuples, LMS, and qType
@@ -704,16 +728,18 @@ class PPALMS_BACKEND:
             cwd = os.getcwd()
             cwd+='/solution_code/'+self.sol_folder_name
             #os.mkdir(cwd)  # audrey: commented out 11/28 4:21pm
-            #print(self.sol_folder_name)
+            print(self.sol_folder_name)
             with open(cwd+'/config.txt','w') as fp:
                 fp.write(self.LMS_choice+'\n')
                 fp.write(self.qType_choice+'\n')
                 fp.write(config_tuples)
                 fp.close()
+            print("done with making the file")
             return True
         except FileNotFoundError:
             self.ui.update_sys_msg("Error: File does not exist")
             #print("That file does not exist")
+            print("file not found")
             return False
 
 
