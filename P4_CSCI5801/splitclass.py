@@ -81,9 +81,15 @@ class UI(tkinter.Tk):
         
         self.instr2 = Label(self, text="Ex: my_code.py")
         self.instr2.place(x=220,y=150)
+        
+        filename = tkinter.StringVar()
+        self.filenameQuery = Entry(self, text="Enter the File Path to the Source Code you wish to Import", bd=5, textvariable = filename) # text entry widget
+        self.filenameQuery.place(x=80, y=120)
+        
+        self.backend.name = tkinter.StringVar()
+        self.attr_nameQuery = Entry(self, text="Enter the Name for the Source Code File", bd=5, textvariable = self.backend.name) # text entry widget
         self.attr_nameQuery.place(x=80, y=150)
-        #self.name = attr_name.get()
-        #print(attr_name)
+
         self.enter = Button(self, text="Import!", command=self.backend.attempt_import)
         self.enter.place(x = 80, y = 180)
 
@@ -92,7 +98,10 @@ class UI(tkinter.Tk):
         self.lbl = Label(self, text="Enter Lower Bound (1st Box) and Upper Bound (2nd Box):", fg='blue') # button widget
         self.lbl.place(x=10, y=90)
     
-        lower = self.attr_nameQuery.place(x=80, y=120)
+        lower = tkinter.StringVar()
+        self.filenameQuery.destroy()
+        self.filenameQuery = Entry(self, text="lower bound", bd=5, textvariable = lower) # text entry widget
+        self.filenameQuery.place(x=80, y=120)
         
         upper = tkinter.StringVar()
         self.attr_nameQuery.destroy()
@@ -161,19 +170,24 @@ class UI(tkinter.Tk):
 
     def selection_ui(self, mode, options):
         options_text = ''
-        
+        try:
+            self.next_step.destroy()
+        except:
+            pass
         if mode == 'LMS':
             try:
+                self.backend.LMS_choice = tkinter.StringVar()
                 self.lbl.config(text = "Type the LMS selection from the given options")
-                self.next_step.config(text="Q Type Selection", command=self.backend.qType_select)
+                #self.next_step.config(text="Question Type Selection", command=self.backend.qType_select)
                 self.backend.LMS_choice = tkinter.StringVar()
                 self.filenameQuery.config(textvariable=self.backend.LMS_choice)
             except: # no UI needs to be altered
                 pass
         else:
             try:
+                self.backend.qType_choice = tkinter.StringVar()
                 self.lbl.config(text = "Type the Question Type selection from the given options")
-                self.next_step.config(text="Finish", command=self.backend.finish_ui)
+                #self.next_step.config(text="Finish", command=self.finish_ui)
                 self.backend.qType_choice = tkinter.StringVar()
                 self.filenameQuery.config(textvariable=self.backend.qType_choice)
             except:
@@ -470,7 +484,7 @@ class PPALMS_BACKEND:
         
         try:
             #print("opening file...")
-            print(attr_name)
+            #print(attr_name)
             with open(('./source_code/'+attr_name), 'r') as fp:
                 text_lines = fp.readlines()
                 length = len(text_lines)
@@ -602,9 +616,9 @@ class PPALMS_BACKEND:
 
             try:
                 #print("opening file...")
-                print("opening attr " + attr_name)
+                #print("opening attr " + attr_name)
                 with open(('./source_code/'+attr_name), 'r') as fp:
-                    print("folder name: " + self.sol_folder_name)
+                    #print("folder name: " + self.sol_folder_name)
                     with open(('./solution_code/'+self.sol_folder_name+'/'+attr_name), 'w') as solution_fp:
                         text_lines = fp.readlines()
                         length = len(text_lines)
@@ -620,7 +634,7 @@ class PPALMS_BACKEND:
                 #print("file is closed")
             except FileNotFoundError:
                 self.ui.update_sys_msg("Error: File does not exist")
-                print("Tuple Lines: %s does not exist" % (attr_name))
+                # print("Tuple Lines: %s does not exist" % (attr_name))
                 return False
         except ValueError: # this is simply a warning, still runs as expected in the system
             # print("filename doesnt have extension")
@@ -693,6 +707,12 @@ class PPALMS_BACKEND:
         self.ui.update_sys_msg("Question Type Selection: System Messages and \nErrors will appear here")
 
         options = []
+        #print(self.LMS_choice)
+        try:
+            self.LMS_choice = self.LMS_choice.get()
+        except:
+            self.LMS_choice = self.LMS_choice
+        self.LMS_choice = self.LMS_choice.lower()
         
         if self.LMS_choice == 'blackboard':
             #print(self.LMS_choice)
@@ -704,7 +724,7 @@ class PPALMS_BACKEND:
             #print(self.LMS_choice)
             options = ['multiple choice','reordering','fill-in-the-blank','find the bug','indentation']
         else:
-            # print("Unexpected error in qType_select: LMS_choice is not valid")
+            #print("Unexpected error in qType_select: LMS_choice is not valid")
             return False
 
         self.ui.selection_ui('qType',options)
@@ -728,18 +748,18 @@ class PPALMS_BACKEND:
             cwd = os.getcwd()
             cwd+='/solution_code/'+self.sol_folder_name
             #os.mkdir(cwd)  # audrey: commented out 11/28 4:21pm
-            print(self.sol_folder_name)
+            #print(self.sol_folder_name)
             with open(cwd+'/config.txt','w') as fp:
                 fp.write(self.LMS_choice+'\n')
                 fp.write(self.qType_choice+'\n')
                 fp.write(config_tuples)
                 fp.close()
-            print("done with making the file")
+            #print("done with making the file")
             return True
         except FileNotFoundError:
             self.ui.update_sys_msg("Error: File does not exist")
             #print("That file does not exist")
-            print("file not found")
+            #print("file not found")
             return False
 
 
@@ -756,8 +776,7 @@ class PPALMS:
         # back.tuples = [(1,2),(3,4)]
         # back.create_config_file()
         # testing:
-        # C:\Users\webgi\Desktop\CLASSES\FALL22Classes\CSCI5801\P4_CSCI5801_v2\P4_CSCI5801\source_code\grass.cml
-
+        # C:\Users\webgi\Desktop\CLASSES\FALL22Classes\CSCI5801\P4_CSCI5801_v3\CSCI5801_P4\P4_CSCI5801\testcase_files\examples.py
 if __name__ == '__main__':  # main, where all of the 'driving' will be done
     process = PPALMS()  # This sets up our application object (aka our interface)
     process.backend.ui.title('PPALMS Interactive Window')
