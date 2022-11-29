@@ -24,9 +24,9 @@ Follow directions as they appear on the UI
 
   ![image](https://user-images.githubusercontent.com/114303423/204431089-f730c14b-5811-4757-a539-c130b951a855.png)
 
-Successful completion should look similar to the following
+Successful completion should look similar to the following:
 
-  ***FINAL UI IMAGE HERE***
+ ![image](https://user-images.githubusercontent.com/100863839/204441088-7b75fdc5-38de-4dd3-ab18-79c65e045d6b.png)
 
 ## Running the tests
 
