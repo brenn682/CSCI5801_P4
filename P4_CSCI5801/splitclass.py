@@ -224,7 +224,7 @@ class UI(tkinter.Tk):
             pass
         self.update_sys_msg("PPALMS is now generating your problem set. :)")
         return True
-
+##########################################################################
 class PPALMS_BACKEND:
     '''
     Purpose: 
@@ -566,16 +566,16 @@ class PPALMS_BACKEND:
         display_text = ''
         tuples = []
         attr_name = ''
-        try:
+
+        try:    # during Unit Testing, self.name will not be populated with an Entry StringVar
             attr_name = str(self.name.get())
-        except:
+        except: # Therefore the self.name value will be a simple String object
             attr_name = str(self.name)
         # print(attr_name)
         
         self.ui.update_sys_msg("Line Tupling: System Messages and\nErrors will appear here")
         
         self.remove_lines()
-
         
         #print(len(attr_name))
         try:
@@ -593,53 +593,50 @@ class PPALMS_BACKEND:
 
             self.sol_folder_name = folder_name
             # print(self.sol_folder_name)
-            try: # does not need to run during unit testing
+
+            # TUPLE UI CREATION: is not to execute during Unit Testing
+            try:
                 self.ui.tuple_ui()
-            except:
+            except: # in unit testing mode if fails; move on...
                 pass
 
             # Make our directory and write the tuple / exclusion file
             cwd = os.getcwd()
-            cwd+='/solution_code/'+folder_name
-            #print(cwd)
-            try:
+            cwd+='/solution_code/'+self.sol_folder_name
+            if os.path.exists(cwd) == False:    # if the solution code folder does not yet exist...
                 os.mkdir(cwd)
-                new_file = open((cwd+"/"+attr_name),"w")
-                new_file.write(solution_code)
-                new_file.close()
-            except OSError:
-                self.ui.update_sys_msg("Warning: solution code under that name already exists")
-                #print("Error: solution code under that name already exists")
-                pass
+            #print(cwd)
+            # try:
+            #   os.mkdir(cwd)
+            new_file = open((cwd+"/"+attr_name),"w")
+            new_file.write(solution_code)
+            new_file.close()
+            # except OSError:
+            #     self.ui.update_sys_msg("Warning: solution code under that name already exists")
+            #     #print("Error: solution code under that name already exists")
+            #     pass
 
             self.ui.make_display(display_text,True)
 
             try:
-                #print("opening file...")
-                #print("opening attr " + attr_name)
                 with open(('./source_code/'+attr_name), 'r') as fp:
-                    #print("folder name: " + self.sol_folder_name)
                     with open(('./solution_code/'+self.sol_folder_name+'/'+attr_name), 'w') as solution_fp:
                         text_lines = fp.readlines()
                         length = len(text_lines)
-                        #print("read done")
                         for line in text_lines:
                             display_text += line
-                        #print("done, writing to files.")
                         solution_fp.write(display_text)
                         solution_fp.close()
                     self.ui.make_display(display_text,True)
                     fp.close()
                 return True
-                #print("file is closed")
             except FileNotFoundError:
                 self.ui.update_sys_msg("Error: File does not exist")
-                # print("Tuple Lines: %s does not exist" % (attr_name))
+                # print("Tuple Lines: File '%s' does not exist" % (attr_name))
                 return False
         except ValueError: # this is simply a warning, still runs as expected in the system
-            # print("filename doesnt have extension")
+            # print("Filename given by User does not have a file extension.\nUnique Solution Code folder will have the same name as the solution code file")
             pass
-        #print("tuple_lines:")
 
     def choice_made(self, mode, options = []):
         '''
@@ -651,12 +648,13 @@ class PPALMS_BACKEND:
                     - the choice the user made is not valid (not in the LMS or qType options available)
                     - mode parameter is not 'LMS' or 'qType'
         '''
-        blackboard_qTypes = ['multiple choice','fill-in-the-blank','reordering','find the bug']
-        canvas_qTypes = ['multiple choice','fill-in-the-blank','reordering','find the bug', 'indentation']
-        moodle_qTypes = ['multiple choice','reordering','fill-in-the-blank','find the bug','indentation']
+        # LMS AND THEIR CORRESPONDING QUESTION TYPES (not verified)
+        # blackboard_qTypes = ['multiple choice','fill-in-the-blank','reordering','find the bug']
+        # canvas_qTypes = ['multiple choice','fill-in-the-blank','reordering','find the bug', 'indentation']
+        # moodle_qTypes = ['multiple choice','reordering','fill-in-the-blank','find the bug','indentation']
         
         selection = ''
-        if mode == 'LMS':
+        if mode == 'LMS':       # we are in selection mode for LMS
             try:
                 selection = self.LMS_choice.get()
                 selection = selection.lower()
@@ -669,7 +667,7 @@ class PPALMS_BACKEND:
                 # print("Valid choice, call 'self.qType_select'")
                 self.qType_select()
                 return True
-        elif mode == 'qType':
+        elif mode == 'qType':       # we are in selection mode for qType
             try:
                 selection = self.qType_choice.get()
                 selection = selection.lower()
@@ -679,7 +677,9 @@ class PPALMS_BACKEND:
                 self.ui.update_sys_msg("Error: Question Type selection is not valid.")
                 return False
             else:
-                # print("Valid choice, call 'self.finish_ui'")
+                # Valid choice, create the config file for the solution code
+                #  as well as call the ui for 'finish' to close out the process
+                self.create_config_file()    # added 12/6 2:30pm by Gasser
                 self.ui.finish_ui()
                 return True
         else:
@@ -743,15 +743,27 @@ class PPALMS_BACKEND:
             count += 1
         config_tuples += ']'
         #print(config_tuples)
+        
+        try:
+            self.qType_choice = self.qType_choice.get()
+        except:
+            self.qType_choice = self.qType_choice
+
         try:
             # attr_name = self.name.get()
             cwd = os.getcwd()
-            cwd+='/solution_code/'+self.sol_folder_name
-            #os.mkdir(cwd)  # audrey: commented out 11/28 4:21pm
+            cwd += '/solution_code/'
+
+            # If the solution code folder does not exist already...
+            if os.path.exists(cwd) == False:
+                os.mkdir(cwd+self.sol_folder_name)
+
+            cwd += self.sol_folder_name
             #print(self.sol_folder_name)
+
             with open(cwd+'/config.txt','w') as fp:
                 fp.write(self.LMS_choice+'\n')
-                fp.write(self.qType_choice+'\n')
+                fp.write(self.qType_choice+'\n') # returns an error: unsupported operand type(s) for +: 'StringVar' and 'str'
                 fp.write(config_tuples)
                 fp.close()
             #print("done with making the file")
@@ -762,7 +774,7 @@ class PPALMS_BACKEND:
             #print("file not found")
             return False
 
-
+##########################################################################
 class PPALMS:
     def __init__(self):
         self.backend = PPALMS_BACKEND()
@@ -777,12 +789,9 @@ class PPALMS:
         # back.create_config_file()
         # testing:
         # C:\Users\webgi\Desktop\CLASSES\FALL22Classes\CSCI5801\P4_CSCI5801_v3\CSCI5801_P4\P4_CSCI5801\testcase_files\examples.py
+
 if __name__ == '__main__':  # main, where all of the 'driving' will be done
     process = PPALMS()  # This sets up our application object (aka our interface)
     process.backend.ui.title('PPALMS Interactive Window')
     process.backend.ui.geometry("700x700+10+20")  # This is how we size our window (can be modified)
     process.backend.ui.mainloop()
-
-    # Only implement Req 1 - 6
-    # END: Save the Solution Code to a folder in the PPALMS 'software' folder
-    # START: Source Code is placed under a unique name in a Source Code folder in PPALMS
