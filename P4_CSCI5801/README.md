@@ -19,6 +19,8 @@ Navigate cwd to P4_CSCI5801
 From shell, compile and run project with python3
 
     shell>> python3 -i .\splitclass.py
+    
+OR run the executable for splitclass, located at dist/splitclass.exe
 
 Follow directions as they appear on the UI
 
