@@ -747,7 +747,7 @@ class PPALMS_BACKEND:
                     include_list += ','
                 count += 1
             include_list += ']'
-            print(include_list)
+            #print(include_list)
 
         # REORDERING (and all other) QTYPE PREP FOR CONFIG FILE -- 12/9
         #if self.qType_choice == 'reordering':
@@ -759,7 +759,7 @@ class PPALMS_BACKEND:
                     config_tuples += ','
                 count += 1
             config_tuples += ']'
-            print(config_tuples)
+            #print(config_tuples)
 
         try:
             # attr_name = self.name.get()

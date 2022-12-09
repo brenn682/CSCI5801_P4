@@ -4,7 +4,7 @@ Initial submission for Implementation and Testing for PPALMS system (problem gen
 
 ### Prerequisites
 
-Requirements for the software and other tools to run and test
+Requirements for the software and other tools to run and test from the command line:
 - [Python3](https://realpython.com/installing-python/)
 - [Tkinter](https://realpython.com/python-gui-tkinter/)
 
