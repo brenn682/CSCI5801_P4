@@ -26,7 +26,7 @@ Follow directions as they appear on the UI
 
 Successful completion should look similar to the following:
 
- ![image](https://user-images.githubusercontent.com/100863839/204441088-7b75fdc5-38de-4dd3-ab18-79c65e045d6b.png)
+ ![image](https://github.com/brenn682/CSCI5801_P4/blob/main/P4_CSCI5801/ppalms%20thing.png)
 
 ## Running the tests
 
