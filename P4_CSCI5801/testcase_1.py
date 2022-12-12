@@ -5,6 +5,9 @@ from tkinter import ttk, messagebox, Label, Button
 import unittest
 import os
 import splitclass
+# added to check config files
+import pdb
+import filecmp
 
 process = splitclass.PPALMS()
 back = process.backend
@@ -228,7 +231,11 @@ class Test_Create_Config_File(unittest.TestCase):
         back.ui.attr_nameQuery = 'test9a'
         back.ui.filenameQuery = './testcase_files/primeNum.cc'
         print("Test_Create_Config_File (test_other_qType) errors: ")
-        print(self.assertEqual(back.create_config_file(), True, "Should be true"))
+        # print(self.assertEqual(back.create_config_file(), True, "Should be true"))
+        
+        # config file format
+        # pdb.set_trace()
+        print(self.assertTrue(filecmp.cmp('./solution_code/primeNum/config.txt', './testcase_files/test_other_qType.txt'), "Should be true"))
         
     def test_reordering(self):
         # set conditions here
@@ -239,7 +246,8 @@ class Test_Create_Config_File(unittest.TestCase):
         back.ui.attr_nameQuery = 'test9b'
         back.ui.filenameQuery = './testcase_files/primeNum.cc'
         print("Test_Create_Config_File (test_reordering) errors: ")
-        print(self.assertEqual(back.create_config_file(), True, "Should be true"))
+        # print(self.assertEqual(back.create_config_file(), True, "Should be true"))
+        print(self.assertTrue(filecmp.cmp('./solution_code/primeNum/config.txt', './testcase_files/test_reordering.txt'), "Should be true"))
 
     def test_multiple_choice(self):
         # set conditions here

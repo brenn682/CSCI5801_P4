@@ -19,8 +19,12 @@ Test_Choice_Made (test_qType_good) errors:
 None
 Test_Create_Config_File (test_file_not_found) errors: 
 None
-Test_Create_Config_File (test_good) errors: 
+Test_Create_Config_File (test_fill_in_the_blank) errors: 
 None
+Test_Create_Config_File (test_multiple_choice) errors: 
+None
+Test_Create_Config_File (test_other_qType) errors: 
+Test_Create_Config_File (test_reordering) errors: 
 Test_In_Ex_Lines (test_empty_field) errors: 
 None
 Test_In_Ex_Lines (test_good) errors: 
