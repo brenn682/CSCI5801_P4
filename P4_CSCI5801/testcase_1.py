@@ -219,7 +219,7 @@ class Test_QType_Select(unittest.TestCase):
 
 class Test_Create_Config_File(unittest.TestCase):
     
-    def test_good(self):
+    def test_other_qType(self):
         # set conditions here
         back.tuples = [(1,2),(3,4)]
         back.sol_folder_name = 'primeNum'
@@ -227,8 +227,41 @@ class Test_Create_Config_File(unittest.TestCase):
         back.LMS_choice = 'canvas'
         back.ui.attr_nameQuery = 'test9a'
         back.ui.filenameQuery = './testcase_files/primeNum.cc'
-        print("Test_Create_Config_File (test_good) errors: ")
+        print("Test_Create_Config_File (test_other_qType) errors: ")
         print(self.assertEqual(back.create_config_file(), True, "Should be true"))
+        
+    def test_reordering(self):
+        # set conditions here
+        back.tuples = [(1,2),(3,4)]
+        back.sol_folder_name = 'primeNum'
+        back.qType_choice = 'reordering'
+        back.LMS_choice = 'canvas'
+        back.ui.attr_nameQuery = 'test9b'
+        back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        print("Test_Create_Config_File (test_reordering) errors: ")
+        print(self.assertEqual(back.create_config_file(), True, "Should be true"))
+
+    def test_multiple_choice(self):
+        # set conditions here
+        back.tuples = [(1,2),(3,4)]
+        back.sol_folder_name = 'primeNum'
+        back.qType_choice = 'multiple choice'
+        back.LMS_choice = 'canvas'
+        back.ui.attr_nameQuery = 'test9c'
+        back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        print("Test_Create_Config_File (test_multiple_choice) errors: ")
+        print(self.assertEqual(back.create_config_file(), True, "Should be true"))
+
+    def test_fill_in_the_blank(self):
+        # set conditions here
+        back.tuples = [(1,2),(3,4)]
+        back.sol_folder_name = 'primeNum'
+        back.qType_choice = 'fill-in-the-blank'
+        back.LMS_choice = 'canvas'
+        back.ui.attr_nameQuery = 'test9d'
+        back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        print("Test_Create_Config_File (test_fill_in_the_blank) errors: ")
+        print(self.assertEqual(back.create_config_file(), True, "Should be true"))         
     
     def test_file_not_found(self):
         # set conditions here
@@ -236,12 +269,13 @@ class Test_Create_Config_File(unittest.TestCase):
         back.sol_folder_name = 'green_eggs'
         back.qType_choice = 'indentation'
         back.LMS_choice = 'canvas'
-        back.ui.attr_nameQuery = 'test9b'
+        back.ui.attr_nameQuery = 'test9e'
         back.ui.filenameQuery = './testcase_files/file_DNE.py'
         print("Test_Create_Config_File (test_file_not_found) errors: ")
         print(self.assertEqual(back.create_config_file(), False, "Should be False"))
 
 if __name__ == '__main__':
+    
     # begin the unittest.main()
 
     # redirect output from just stdout/stderr to file names 

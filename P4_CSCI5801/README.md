@@ -4,7 +4,7 @@ Initial submission for Implementation and Testing for PPALMS system (problem gen
 
 ### Prerequisites
 
-Requirements for the software and other tools to run and test
+Requirements for the software and other tools to run and test from the command line:
 - [Python3](https://realpython.com/installing-python/)
 - [Tkinter](https://realpython.com/python-gui-tkinter/)
 
@@ -19,8 +19,12 @@ Navigate cwd to P4_CSCI5801
 From shell, compile and run project with python3
 
     shell>> python3 -i .\splitclass.py
+    
+OR run the executable for splitclass, located at dist/splitclass.exe
 
 Follow directions as they appear on the UI
+
+(*Note: When running the program, you must include the full file directory path (from root) to the file you would like to import.*)
 
   ![image](https://user-images.githubusercontent.com/114303423/204431089-f730c14b-5811-4757-a539-c130b951a855.png)
 

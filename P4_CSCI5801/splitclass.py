@@ -606,15 +606,11 @@ class PPALMS_BACKEND:
             if os.path.exists(cwd) == False:    # if the solution code folder does not yet exist...
                 os.mkdir(cwd)
             #print(cwd)
-            # try:
-            #   os.mkdir(cwd)
+            
+            # 12/6 THIS WAS THE SOURCE OF THE ORIGINAL 'config' ABORT
             new_file = open((cwd+"/"+attr_name),"w")
             new_file.write(solution_code)
             new_file.close()
-            # except OSError:
-            #     self.ui.update_sys_msg("Warning: solution code under that name already exists")
-            #     #print("Error: solution code under that name already exists")
-            #     pass
 
             self.ui.make_display(display_text,True)
 
@@ -734,20 +730,36 @@ class PPALMS_BACKEND:
         return True
 
     def create_config_file(self): # to do, make configuration file that contains list of tuples, LMS, and qType
-        config_tuples = '['
-        count = 0
-        for t in self.tuples:
-            config_tuples += '(' + str(t[0]) + ',' + str(t[1]) + ')'
-            if count != len(self.tuples)-1:
-                config_tuples += ','
-            count += 1
-        config_tuples += ']'
-        #print(config_tuples)
-        
+
         try:
             self.qType_choice = self.qType_choice.get()
         except:
             self.qType_choice = self.qType_choice
+
+        include_list = '['
+        config_tuples = '['
+        # MULTIPLE CHOICE AND FILL-IN-THE-BLANK QTYPE PREP FOR CONFIG FILE -- 12/9
+        if self.qType_choice == 'multiple choice' or self.qType_choice == 'fill-in-the-blank':
+            count = 0
+            for num in range(self.sol_code_len):
+                include_list += str(num)
+                if count != self.sol_code_len-1:
+                    include_list += ','
+                count += 1
+            include_list += ']'
+            #print(include_list)
+
+        # REORDERING (and all other) QTYPE PREP FOR CONFIG FILE -- 12/9
+        #if self.qType_choice == 'reordering':
+        else:
+            count = 0
+            for t in self.tuples:
+                config_tuples += '(' + str(t[0]) + ',' + str(t[1]) + ')'
+                if count != len(self.tuples)-1:
+                    config_tuples += ','
+                count += 1
+            config_tuples += ']'
+            #print(config_tuples)
 
         try:
             # attr_name = self.name.get()
@@ -763,8 +775,11 @@ class PPALMS_BACKEND:
 
             with open(cwd+'/config.txt','w') as fp:
                 fp.write(self.LMS_choice+'\n')
-                fp.write(self.qType_choice+'\n') # returns an error: unsupported operand type(s) for +: 'StringVar' and 'str'
-                fp.write(config_tuples)
+                fp.write(self.qType_choice+'\n')
+                if self.qType_choice == 'multiple choice' or self.qType_choice == 'fill-in-the-blank':
+                    fp.write(include_list)
+                else:
+                    fp.write(config_tuples)
                 fp.close()
             #print("done with making the file")
             return True
