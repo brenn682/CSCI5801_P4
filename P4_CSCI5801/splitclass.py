@@ -219,14 +219,6 @@ class UI(tkinter.Tk):
 
         self.update_sys_msg("Number of Students Selection: System Messages and \nErrors will appear here")
 
-        # self.lbl.destroy()
-        # self.lbl = Label(self, text="Enter the number of students:", fg='blue') # button widget
-        # self.lbl.place(x=10, y=90)
-
-        # self.instr1.destroy()
-        # self.instr1 = Label(self, text="Ex: 120")
-        # self.instr1.place(x=220,y=120)
-
         self.backend.numStudents = tkinter.StringVar()
         self.lbl.config(text = "Input Number of Students")
         self.backend.numStudents = tkinter.StringVar()
@@ -253,13 +245,7 @@ class UI(tkinter.Tk):
             self.enter.destroy()
         except:
             pass
-        # self.filenameQuery.destroy()
-        # self.filenameQuery = Entry(self, text="First line # (lower bound)", bd=5, textvariable = numStudents) # text entry widget
-        # self.filenameQuery.place(x=80, y=120)
 
-        # self.enter.destroy()
-
-        # self.next_step.destroy()
         self.next_step = Button(self, text="Input Number of Students", command=self.backend.numStudents_select)
         self.next_step.place(x = 360, y = 180)
     

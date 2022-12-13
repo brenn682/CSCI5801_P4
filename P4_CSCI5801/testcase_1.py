@@ -221,7 +221,7 @@ class Test_QType_Select(unittest.TestCase):
         print(self.assertEqual(back.qType_select(), False, "Should be False"))
 
 class Test_Create_Config_File(unittest.TestCase):
-    
+    back.numStudents = 42
     def test_other_qType(self):
         # set conditions here
         back.tuples = [(1,2),(3,4)]
