@@ -806,7 +806,7 @@ class PPALMS_BACKEND:
             count = 0
             for i in self.sol_code_indentation:
                 indent_list += str(i)
-                if count != len(self.indent_list)-1:
+                if count != len(indent_list)-1:
                     indent_list += ','
                 count += 1
             indent_list += ']'
