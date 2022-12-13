@@ -256,6 +256,7 @@ class PPALMS_BACKEND:
         name: the name of the PPALMS process (will be the name of the solution code, imported 
                 source code and the solution code's folder.)
         sol_code_len: the number of lines in the solution code file.
+        sol_folder_name: the name of the folder that the solution code will be saved in
         exclude: a list of integers. The lines to exclude from the source code when creating 
                 the solution code.
         include: a list of integers. The lines to include in the source code when creating 
@@ -264,6 +265,8 @@ class PPALMS_BACKEND:
         tuples: a list of integer tuples. These are included in the solution code configuration file,
                 which is located with the solution code in it's respective folder within the 
                 solution_code folder.
+        sol_code_indentation: a list of positive integers, representing the number of 'tabs' in the
+                solution code. This is used for qType 'reordering'
         LMS_choice: the LMS selection, either Blackboard, Canvas, or Moodle
         qType_choie: the question type selection, depends on the LMS_choice
         
@@ -296,6 +299,7 @@ class PPALMS_BACKEND:
         self.exclude = []
         self.include = []
         self.tuples = []
+        self.sol_code_indentation = []
         self.LMS_choice = ''
         self.qType_choice = ''
 
@@ -638,14 +642,25 @@ class PPALMS_BACKEND:
 
             self.ui.make_display(display_text,True)
 
+            # 12/12: Added functionality for counting the indentations in each line of code.
+            # This is to add customized functionality for the 'indentation' qType.
+            # The indentation counts are saved as a list of positive integers under the var self.sol_code_indentation
             try:
                 with open(('./source_code/'+attr_name), 'r') as fp:
                     with open(('./solution_code/'+self.sol_folder_name+'/'+attr_name), 'w') as solution_fp:
                         text_lines = fp.readlines()
                         length = len(text_lines)
+                        # 12/12: preceding whitespace counter and while loop added for 'indentation'
                         for line in text_lines:
+                            count = 0
+                            whitespace = 0
+                            while (line[count] == '\t' or line[count] == ' ') and count < len(line):
+                                whitespace += 1
+                                count += 1
+                            self.sol_code_indentation.append(whitespace)
                             display_text += line
                         solution_fp.write(display_text)
+                        print(self.sol_code_indentation)  # 12/12 FOR TESTING PURPOSES, COMMENT OUT WHEN DONE
                         solution_fp.close()
                     self.ui.make_display(display_text,True)
                     fp.close()
@@ -774,6 +789,7 @@ class PPALMS_BACKEND:
 
         include_list = '['
         config_tuples = '['
+        indent_list =  '['
         # MULTIPLE CHOICE AND FILL-IN-THE-BLANK QTYPE PREP FOR CONFIG FILE -- 12/9
         if self.qType_choice == 'multiple choice' or self.qType_choice == 'fill-in-the-blank':
             count = 0
@@ -784,9 +800,21 @@ class PPALMS_BACKEND:
                 count += 1
             include_list += ']'
             #print(include_list)
+        
+        # INDENTATION QTYPE PREP FOR CONFIG FILE -- 12/12
+        elif self.qType_choice == 'indentation':
+            count = 0
+            for i in self.sol_code_indentation:
+                indent_list += str(i[0])
+                if count != len(self.indent_list)-1:
+                    indent_list += ','
+                count += 1
+            config_tuples += ']'
+            #print(config_tuples)
 
-        # REORDERING (and all other) QTYPE PREP FOR CONFIG FILE -- 12/9
-        #if self.qType_choice == 'reordering':
+
+        # REORDERING AND FIND THE BUG QTYPE PREP FOR CONFIG FILE -- 12/9
+        #if self.qType_choice == 'reordering' or self.qType_choice == 'find the bug':
         else:
             count = 0
             for t in self.tuples:
