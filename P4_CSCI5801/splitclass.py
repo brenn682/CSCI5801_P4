@@ -58,6 +58,7 @@ class UI(tkinter.Tk):
         self.enter2 = ''
         self.display = ''
         self.next_step = ''
+        self.numStudents = ''
 
         self.sys_msg = Label(self, text="System Messages and Errors will appear here", fg='red')
         self.sys_msg.place(x=360, y=90)
@@ -209,6 +210,29 @@ class UI(tkinter.Tk):
         except:
             pass
         
+    def numStudents_ui(self):
+
+        self.update_sys_msg("Number of Students Selection: System Messages and \nErrors will appear here")
+
+        self.lbl.destroy()
+        self.lbl = Label(self, text="Enter the number of students:", fg='blue') # button widget
+        self.lbl.place(x=10, y=90)
+
+        self.instr1.destroy()
+        self.instr1 = Label(self, text="Ex: 120")
+        self.instr1.place(x=220,y=120)
+
+        numStudents = tkinter.StringVar()
+        self.filenameQuery.destroy()
+        self.filenameQuery = Entry(self, text="First line # (lower bound)", bd=5, textvariable = numStudents) # text entry widget
+        self.filenameQuery.place(x=80, y=120)
+
+        self.enter.destroy()
+
+        self.next_step.destroy()
+        self.next_step = Button(self, text="Input Number of Students", command=self.backend.numStudents_select)
+        self.next_step.place(x = 360, y = 180)
+    
     def finish_ui(self): #display a celebratory message
         try:
             self.lbl.destroy()
@@ -674,9 +698,7 @@ class PPALMS_BACKEND:
                 return False
             else:
                 # Valid choice, create the config file for the solution code
-                #  as well as call the ui for 'finish' to close out the process
-                self.create_config_file()    # added 12/6 2:30pm by Gasser
-                self.ui.finish_ui()
+                self.ui.numStudents_ui()
                 return True
         else:
             # print('invalid mode')
@@ -727,6 +749,20 @@ class PPALMS_BACKEND:
         
         # print("In qType_select")
         # print(options)
+        return True
+
+    def numStudents_select(self):
+
+        try:
+            self.ui.numStudents = self.ui.numStudents.get()
+        except:
+            self.ui.numStudents = self.ui.numStudents
+        # self.ui.numStudents= int(self.ui.numStudents)
+
+        #  as well as call the ui for 'finish' to close out the process
+        self.create_config_file()    # added 12/6 2:30pm by Gasser
+        self.ui.finish_ui()
+
         return True
 
     def create_config_file(self): # to do, make configuration file that contains list of tuples, LMS, and qType
