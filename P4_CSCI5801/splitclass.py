@@ -139,7 +139,7 @@ class UI(tkinter.Tk):
 
     def tuple_ui(self):
         self.lbl.destroy()
-        self.lbl = Label(self, text="Enter Two Adjecent Line Numbers to 'tuple' them (tuples are only used in the question type 'reordering):", fg='blue') # button widget
+        self.lbl = Label(self, text="Enter Two Adjecent Line Numbers to 'tuple' them (tuples are only used in the question type 'reordering'):", fg='blue') # button widget
         self.lbl.place(x=10, y=90)
     
         first = tkinter.StringVar()
@@ -353,6 +353,7 @@ class PPALMS_BACKEND:
                     - FileNotFound error is raised
                     - Unexpected error occurs while reading the lines from the open file
         '''
+        self.ui.update_sys_msg("Importing!")
         # Grab the entries from the user's boxes
         try: 
             filename = self.ui.filenameQuery.get()
@@ -389,7 +390,10 @@ class PPALMS_BACKEND:
                 return False
             if display_text != '':
                 self.ui.make_display(display_text,False)
-                new_file = open(("./source_code/"+attr_name),"w")
+                cwd = os.getcwd()
+                if os.path.exists(cwd+"/source_code/") == False:    # if the solution code folder does not yet exist...
+                    os.mkdir(cwd+"/source_code/")
+                new_file = open((cwd+"/source_code/"+attr_name),"w")
                 new_file.write(display_text)
                 self.ui.update_sys_msg("Import successful. Source Code file is now \nready for annotation")
                 new_file.close()
@@ -497,7 +501,8 @@ class PPALMS_BACKEND:
             fp.close()
             #print(solution_code)
             self.sol_code_len = count
-            with open(('./source_code/'+attr_name), 'w') as updated_fp:
+            cwd = os.getcwd()
+            with open((cwd+'/source_code/'+attr_name), 'w') as updated_fp:
                 updated_fp.write(solution_code)
                 # print(self.sol_code_len)
             updated_fp.close()
@@ -538,7 +543,8 @@ class PPALMS_BACKEND:
         try:
             #print("opening file...")
             #print(attr_name)
-            with open(('./source_code/'+attr_name), 'r') as fp:
+            cwd = os.getcwd()
+            with open((cwd+'/source_code/'+attr_name), 'r') as fp:
                 text_lines = fp.readlines()
                 length = len(text_lines)
                 #print("read done")
@@ -671,8 +677,9 @@ class PPALMS_BACKEND:
             # This is to add customized functionality for the 'indentation' qType.
             # The indentation counts are saved as a list of positive integers under the var self.sol_code_indentation
             try:
-                with open(('./source_code/'+attr_name), 'r') as fp:
-                    with open(('./solution_code/'+self.sol_folder_name+'/'+attr_name), 'w') as solution_fp:
+                cwd = os.getcwd()
+                with open((cwd+'/source_code/'+attr_name), 'r') as fp:
+                    with open((cwd+'/solution_code/'+self.sol_folder_name+'/'+attr_name), 'w') as solution_fp:
                         text_lines = fp.readlines()
                         length = len(text_lines)
                         # 12/12: preceding whitespace counter and while loop added for 'indentation'
