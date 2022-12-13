@@ -844,6 +844,7 @@ class PPALMS_BACKEND:
                     fp.write(include_list)
                 else:
                     fp.write(config_tuples)
+                fp.write(str(self.ui.numStudents))
                 fp.close()
             #print("done with making the file")
             return True
