@@ -564,7 +564,7 @@ class PPALMS_BACKEND:
 
         return True
         
-    def make_tuple(self, first, second, length): # TO DO: INPUT TESTING
+    def make_tuple(self, first, second, length):
         '''
         Purpose: Checks the validity of the user inputs for tuple-making.
                 If all parameters passed in are valid, a tuple is formed and
@@ -757,7 +757,7 @@ class PPALMS_BACKEND:
         # print("In LMS_select")
         return True
 
-    def qType_select(self): # set up the making of the configuration file
+    def qType_select(self):
         '''
         Purpose: Final step! User selects qType for the configuration file in the UI, but here
                 is where what qTypes they can choose from based on the LMS they chose
@@ -774,7 +774,7 @@ class PPALMS_BACKEND:
         
         if self.LMS_choice == 'blackboard':
             #print(self.LMS_choice)
-            options = ['multiple choice','fill-in-the-blank','reordering','find the bug']
+            options = ['multiple choice','fill-in-the-blank','reordering','find the bug', 'inden']
         elif self.LMS_choice == 'canvas':
             #print(self.LMS_choice)
             options = ['multiple choice','fill-in-the-blank','reordering','find the bug', 'indentation']
@@ -808,7 +808,7 @@ class PPALMS_BACKEND:
 
         return True
 
-    def create_config_file(self): # to do, make configuration file that contains list of tuples, LMS, and qType
+    def create_config_file(self):
         '''
         Purpose: generates the config.txt that will be located in the solution code's unique folder.
                 The contents of this file will be:
