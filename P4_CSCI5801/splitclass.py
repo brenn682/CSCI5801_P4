@@ -660,7 +660,7 @@ class PPALMS_BACKEND:
                             self.sol_code_indentation.append(whitespace)
                             display_text += line
                         solution_fp.write(display_text)
-                        print(self.sol_code_indentation)  # 12/12 FOR TESTING PURPOSES, COMMENT OUT WHEN DONE
+                        # print(self.sol_code_indentation)  # 12/12 FOR TESTING PURPOSES, COMMENT OUT WHEN DONE
                         solution_fp.close()
                     self.ui.make_display(display_text,True)
                     fp.close()
