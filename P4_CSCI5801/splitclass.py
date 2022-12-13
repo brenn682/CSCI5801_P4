@@ -212,24 +212,54 @@ class UI(tkinter.Tk):
         
     def numStudents_ui(self):
 
+        try:
+            self.next_step.destroy()
+        except:
+            pass
+
         self.update_sys_msg("Number of Students Selection: System Messages and \nErrors will appear here")
 
-        self.lbl.destroy()
-        self.lbl = Label(self, text="Enter the number of students:", fg='blue') # button widget
-        self.lbl.place(x=10, y=90)
+        # self.lbl.destroy()
+        # self.lbl = Label(self, text="Enter the number of students:", fg='blue') # button widget
+        # self.lbl.place(x=10, y=90)
 
-        self.instr1.destroy()
-        self.instr1 = Label(self, text="Ex: 120")
-        self.instr1.place(x=220,y=120)
+        # self.instr1.destroy()
+        # self.instr1 = Label(self, text="Ex: 120")
+        # self.instr1.place(x=220,y=120)
 
-        numStudents = tkinter.StringVar()
-        self.filenameQuery.destroy()
-        self.filenameQuery = Entry(self, text="First line # (lower bound)", bd=5, textvariable = numStudents) # text entry widget
-        self.filenameQuery.place(x=80, y=120)
+        self.backend.numStudents = tkinter.StringVar()
+        self.lbl.config(text = "Input Number of Students")
+        self.backend.numStudents = tkinter.StringVar()
+        self.filenameQuery.config(textvariable=self.backend.numStudents)
 
-        self.enter.destroy()
+        try: # in unit testing, these are ignored
+            self.enter.config(text="Enter Selection", command=lambda: self.backend.numStudents_select)
+        except:
+            pass
 
-        self.next_step.destroy()
+        try:
+            self.instr1.destroy()
+        except:
+            pass
+        try:
+            self.instr2.destroy()
+        except:
+            pass
+        try:
+            self.attr_nameQuery.destroy()
+        except:
+            pass
+        try:
+            self.enter.destroy()
+        except:
+            pass
+        # self.filenameQuery.destroy()
+        # self.filenameQuery = Entry(self, text="First line # (lower bound)", bd=5, textvariable = numStudents) # text entry widget
+        # self.filenameQuery.place(x=80, y=120)
+
+        # self.enter.destroy()
+
+        # self.next_step.destroy()
         self.next_step = Button(self, text="Input Number of Students", command=self.backend.numStudents_select)
         self.next_step.place(x = 360, y = 180)
     
@@ -302,6 +332,7 @@ class PPALMS_BACKEND:
         self.sol_code_indentation = []
         self.LMS_choice = ''
         self.qType_choice = ''
+        self.numStudents = ''
 
         # self.ppalms_qTypes = ['reordering','multiple choice','python indentation','find the bug','fill-in-the-blank']
         ''' PPALMS qTypes descriptions:
@@ -660,7 +691,7 @@ class PPALMS_BACKEND:
                             self.sol_code_indentation.append(whitespace)
                             display_text += line
                         solution_fp.write(display_text)
-                        print(self.sol_code_indentation)  # 12/12 FOR TESTING PURPOSES, COMMENT OUT WHEN DONE
+                        # print(self.sol_code_indentation)  # 12/12 FOR TESTING PURPOSES, COMMENT OUT WHEN DONE
                         solution_fp.close()
                     self.ui.make_display(display_text,True)
                     fp.close()
@@ -769,9 +800,9 @@ class PPALMS_BACKEND:
     def numStudents_select(self):
 
         try:
-            self.ui.numStudents = self.ui.numStudents.get()
+            self.numStudents = self.numStudents.get()
         except:
-            self.ui.numStudents = self.ui.numStudents
+            self.numStudents = self.numStudents
         # self.ui.numStudents= int(self.ui.numStudents)
 
         #  as well as call the ui for 'finish' to close out the process
@@ -844,7 +875,7 @@ class PPALMS_BACKEND:
                     fp.write(include_list+'n')
                 else:
                     fp.write(config_tuples+'\n')
-                fp.write(str(self.ui.numStudents))
+                fp.write(str(self.numStudents))
                 fp.close()
             #print("done with making the file")
             return True
