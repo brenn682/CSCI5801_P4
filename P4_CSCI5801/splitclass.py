@@ -841,9 +841,9 @@ class PPALMS_BACKEND:
                 fp.write(self.LMS_choice+'\n')
                 fp.write(self.qType_choice+'\n')
                 if self.qType_choice == 'multiple choice' or self.qType_choice == 'fill-in-the-blank':
-                    fp.write(include_list)
+                    fp.write(include_list+'n')
                 else:
-                    fp.write(config_tuples)
+                    fp.write(config_tuples+'\n')
                 fp.write(str(self.ui.numStudents))
                 fp.close()
             #print("done with making the file")
