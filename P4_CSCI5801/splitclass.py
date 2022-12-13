@@ -136,7 +136,7 @@ class UI(tkinter.Tk):
 
     def tuple_ui(self):
         self.lbl.destroy()
-        self.lbl = Label(self, text="Enter Two Adjecent Line Numbers to 'tuple' them:", fg='blue') # button widget
+        self.lbl = Label(self, text="Enter Two Adjecent Line Numbers to 'tuple' them (tuples are only used in the question type 'reordering):", fg='blue') # button widget
         self.lbl.place(x=10, y=90)
     
         first = tkinter.StringVar()
