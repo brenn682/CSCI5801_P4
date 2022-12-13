@@ -1,4 +1,4 @@
 canvas
-indentation
+multiple choice
 [(1,2),(3,4)]
 42
