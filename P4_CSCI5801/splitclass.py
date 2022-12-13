@@ -809,8 +809,8 @@ class PPALMS_BACKEND:
                 if count != len(self.indent_list)-1:
                     indent_list += ','
                 count += 1
-            config_tuples += ']'
-            #print(config_tuples)
+            indent_list += ']'
+            #print(indent_list)
 
 
         # REORDERING AND FIND THE BUG QTYPE PREP FOR CONFIG FILE -- 12/9
