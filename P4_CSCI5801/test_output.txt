@@ -25,6 +25,8 @@ Test_Create_Config_File (test_multiple_choice) errors:
 None
 Test_Create_Config_File (test_other_qType) errors: 
 Test_Create_Config_File (test_reordering) errors: 
+None
+None
 Test_In_Ex_Lines (test_empty_field) errors: 
 None
 Test_In_Ex_Lines (test_good) errors: 

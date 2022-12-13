@@ -1,4 +1,4 @@
 canvas
-fill-in-te-blank
+fill-in-the-blank
 [(1,2),(3,4)]
 42

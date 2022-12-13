@@ -221,20 +221,20 @@ class Test_QType_Select(unittest.TestCase):
         print(self.assertEqual(back.qType_select(), False, "Should be False"))
 
 class Test_Create_Config_File(unittest.TestCase):
-    back.numStudents = 42
+
     def test_other_qType(self):
         # set conditions here
         back.tuples = [(1,2),(3,4)]
-        back.sol_folder_name = 'primeNum'
+        back.sol_folder_name = 'test9a'
         back.qType_choice = 'indentation'
         back.LMS_choice = 'canvas'
         back.ui.attr_nameQuery = 'test9a'
         back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        back.numStudents = 42
         print("Test_Create_Config_File (test_other_qType) errors: ")
-        # print(self.assertEqual(back.create_config_file(), True, "Should be true"))
+        print(self.assertEqual(back.create_config_file(), True, "Should be true"))
         
-        # config file format
-        # pdb.set_trace()
+        pdb.set_trace()
         print(self.assertTrue(filecmp.cmp('./solution_code/primeNum/config.txt', './testcase_files/test_other_qType.txt'), "Should be true"))
         
     def test_reordering(self):
@@ -245,8 +245,9 @@ class Test_Create_Config_File(unittest.TestCase):
         back.LMS_choice = 'canvas'
         back.ui.attr_nameQuery = 'test9b'
         back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        back.numStudents = 42
         print("Test_Create_Config_File (test_reordering) errors: ")
-        # print(self.assertEqual(back.create_config_file(), True, "Should be true"))
+        print(self.assertEqual(back.create_config_file(), True, "Should be true"))
         print(self.assertTrue(filecmp.cmp('./solution_code/primeNum/config.txt', './testcase_files/test_reordering.txt'), "Should be true"))
 
     def test_multiple_choice(self):
@@ -257,8 +258,11 @@ class Test_Create_Config_File(unittest.TestCase):
         back.LMS_choice = 'canvas'
         back.ui.attr_nameQuery = 'test9c'
         back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        back.numStudents = 42
         print("Test_Create_Config_File (test_multiple_choice) errors: ")
         print(self.assertEqual(back.create_config_file(), True, "Should be true"))
+        print(self.assertTrue(filecmp.cmp('./solution_code/primeNum/config.txt', './testcase_files/test_multiple_choice.txt'), "Should be true"))
+
 
     def test_fill_in_the_blank(self):
         # set conditions here
@@ -268,8 +272,11 @@ class Test_Create_Config_File(unittest.TestCase):
         back.LMS_choice = 'canvas'
         back.ui.attr_nameQuery = 'test9d'
         back.ui.filenameQuery = './testcase_files/primeNum.cc'
+        back.numStudents = 42
         print("Test_Create_Config_File (test_fill_in_the_blank) errors: ")
-        print(self.assertEqual(back.create_config_file(), True, "Should be true"))         
+        print(self.assertEqual(back.create_config_file(), True, "Should be true"))  
+        print(self.assertTrue(filecmp.cmp('./solution_code/primeNum/config.txt', './testcase_files/test_FITB.txt'), "Should be true"))
+
     
     def test_file_not_found(self):
         # set conditions here
@@ -279,6 +286,7 @@ class Test_Create_Config_File(unittest.TestCase):
         back.LMS_choice = 'canvas'
         back.ui.attr_nameQuery = 'test9e'
         back.ui.filenameQuery = './testcase_files/file_DNE.py'
+        back.numStudents = 42
         print("Test_Create_Config_File (test_file_not_found) errors: ")
         print(self.assertEqual(back.create_config_file(), False, "Should be False"))
 
