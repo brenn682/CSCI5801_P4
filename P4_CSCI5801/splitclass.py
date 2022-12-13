@@ -223,9 +223,14 @@ class UI(tkinter.Tk):
         self.update_sys_msg("Number of Students Selection: System Messages and \nErrors will appear here")
 
         self.backend.numStudents = tkinter.StringVar()
-        self.lbl.config(text = "Input Number of Students")
-        self.backend.numStudents = tkinter.StringVar()
-        self.filenameQuery.config(textvariable=self.backend.numStudents)
+        try:
+            self.lbl.config(text = "Input Number of Students")
+        except:
+            pass
+        try:
+            self.filenameQuery.config(textvariable=self.backend.numStudents)
+        except:
+            pass
 
         try: # in unit testing, these are ignored
             self.enter.config(text="Enter Selection", command=lambda: self.backend.numStudents_select)
