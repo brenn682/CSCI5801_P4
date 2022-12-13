@@ -28,6 +28,9 @@ class UI(tkinter.Tk):
         import_layout: create the UI for the import source code step
         line_time: create the UI for the line inclusion/exclusion step
         tuple_ui: create the UI for the line tupling step
+        selection_ui: create the UI for LMS and qType selection
+        numStudents_ui: create the UI for entering the number of students to generate the set for
+        finish_ui: displays the finishing message and clears the process (if you select 'Start' the process can begin again!)
     '''
 
     def __init__(self, backend):
@@ -299,7 +302,12 @@ class PPALMS_BACKEND:
                     added to the process' tuple list.
         tuple_lines: Creates the Solution Code folder for the Source Code, the tuples chosen
                     are stored as a list of tuples in the Solution Code's configuration file.
-        choice_made: creates a config file with the list of tuples, the LMS selection, and the qType selection. All are located on seperate rows.
+        choice_made: validates that the LMS and qTypes chosen by the user in the UI are valid.
+        LMS_select: Calls the ui for LMS (and qType) selection and records the user's chosen LMS.
+        qType_select: Calls the ui for qType (and LMS) selection and records the user's chosen qType
+        numStudents_select: Records the user's entered number of students to generate the problem set for.
+        create_config_file: Creates a configuration file unique to each instance of the PPALMS prep process.
+                        Format of the file is included in the method documentation, and is dependent on the qType
     '''
     def __init__(self):
         # super().__init__()
@@ -343,11 +351,7 @@ class PPALMS_BACKEND:
         # Grab the entries from the user's boxes
         try: 
             filename = self.ui.filenameQuery.get()
-            attr_name = self.ui.attr_nameQuery.get()  # TO DO: check if a file in the
-                                                    # source code already exists under
-                                                    #that name (or change the specs such
-                                                    #that files submitted under the same
-                                                    #name will be overwritten)
+            attr_name = self.ui.attr_nameQuery.get()  
         except:
             filename = self.ui.filenameQuery
             attr_name = self.ui.attr_nameQuery
@@ -384,7 +388,6 @@ class PPALMS_BACKEND:
                 new_file.write(display_text)
                 self.ui.update_sys_msg("Import successful. Source Code file is now \nready for annotation")
                 new_file.close()
-            # TO DO: THIS OVERLAPS!!!!
             self.ui.next_step = Button(self.ui, text="Include/Exclude Lines", command=self.select_lines)
             self.ui.next_step.place(x = 360, y = 180)
             return True
@@ -737,7 +740,7 @@ class PPALMS_BACKEND:
             return False
         
 
-    def LMS_select(self): # TO DO: how to unit test? test that self.ui.selection_ui ran properly?
+    def LMS_select(self):
         '''
         Purpose: User selects LMS for configuration file, creates config file
                 for Solution Code folder.
@@ -784,7 +787,10 @@ class PPALMS_BACKEND:
         return True
 
     def numStudents_select(self):
-
+        '''
+        Purpose: User enters the number of students (and thus, the number of mutated questions to generate) that
+            that the problem set will be made for.
+        '''
         try:
             self.numStudents = self.numStudents.get()
         except:
@@ -798,7 +804,14 @@ class PPALMS_BACKEND:
         return True
 
     def create_config_file(self): # to do, make configuration file that contains list of tuples, LMS, and qType
-
+        '''
+        Purpose: generates the config.txt that will be located in the solution code's unique folder.
+                The contents of this file will be:
+                    1   LMS_choice
+                    2   qType_choice
+                    3   tuple list or indentation list or included lines list (dependent on qType_choice)
+                    4   numStudents
+        '''
         try:
             self.qType_choice = self.qType_choice.get()
         except:
@@ -858,7 +871,10 @@ class PPALMS_BACKEND:
                 fp.write(self.LMS_choice+'\n')
                 fp.write(self.qType_choice+'\n')
                 if self.qType_choice == 'multiple choice' or self.qType_choice == 'fill-in-the-blank':
-                    fp.write(include_list+'n')
+                    fp.write(include_list+'\n')
+                # 12/13 Sprint 3 addition to add functionality for indentation and find the bug qtypes
+                elif self.qType_choice == 'indentation':
+                    fp.write(indent_list+'\n')
                 else:
                     fp.write(config_tuples+'\n')
                 fp.write(str(self.numStudents))
