@@ -10,7 +10,7 @@ Requirements for the software and other tools to run and test from the command l
 
 ### Installing
 
-Download/unzip/extract P4_CSCI5801 folder/directory and all contents
+Download/unzip/extract/clone P4_CSCI5801 folder/directory and all contents
 
 Make sure you have python3 and tkinter installed
 
