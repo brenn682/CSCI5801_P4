@@ -22,19 +22,51 @@ From shell, compile and run project with python3
     
 OR run the executable for splitclass, located at dist/splitclass.exe
 
+### Steps to use PPALMS
+
 Follow directions as they appear on the UI
 
+1. User starts PPLALMS application. ‘Exit’ will close out of the entire program. ‘Start’ will launch the next step of the PPALMS process.
+  ![image](https://github.com/brenn682/CSCI5801_P4/blob/main/P4_CSCI5801/step1.png)
+
+2. User has pressed the ‘Start’ button. PPALMS now requires a filepath and a name to give the process (this will be the name of the source code, solution code, and solution code folder)
 (*Note: When running the program, you must include the full file directory path (from root) to the file you would like to import.*)
 
   ![image](https://user-images.githubusercontent.com/114303423/204431089-f730c14b-5811-4757-a539-c130b951a855.png)
+  
+3. Enter valid destination filepath and desired process name for the solution code
+  ![image](https://github.com/brenn682/CSCI5801_P4/blob/main/P4_CSCI5801/step3)
+ 
+4. Successful import and display of source code file contents.
+  ![image](https://github.com/brenn682/CSCI5801_P4/blob/main/P4_CSCI5801/step4)
+  
+5. After clicking the ‘Include/Exclude Lines’ button, PPALMS is ready for the user to begin entering lines for inclusion or exclusion.
+  ![image](https://github.com/brenn682/CSCI5801_P4/blob/main/P4_CSCI5801/step5)
+  
+6. Lines 0 through 5 are added for inclusion
+  ![image](https://github.com/brenn682/CSCI5801_P4/blob/main/P4_CSCI5801/step6)
+  
+7. Lines 5 through 9 are excluded (the entire reverse_string method)
+  ![image](https://github.com/brenn682/CSCI5801_P4/blob/main/P4_CSCI5801/step7)
+  
+8. Excluded lines have been removed from the source code file. PPALMS is ready for the user to begin entering lines for tuples
+   ![image](https://github.com/brenn682/CSCI5801_P4/blob/main/P4_CSCI5801/step8)
+   
+9. User creates tuple (1,2)
+   ![image](https://github.com/brenn682/CSCI5801_P4/blob/main/P4_CSCI5801/step9)
+   
+10. User selects ‘blackboard’ as their LMS
+   ![image](https://github.com/brenn682/CSCI5801_P4/blob/main/P4_CSCI5801/step10)
+    
+11. User select multiple choice from the list of available qTypes
+   ![image](https://github.com/brenn682/CSCI5801_P4/blob/main/P4_CSCI5801/step11)
 
-Successful completion should look similar to the following:
-
- ![image](https://github.com/brenn682/CSCI5801_P4/blob/main/P4_CSCI5801/ppalms%20thing.png)
+12. Preparatory process is complete.
+    ![image](https://github.com/brenn682/CSCI5801_P4/blob/main/P4_CSCI5801/step13)
 
 ## Running the tests
 
-A file named `testcase_1.py` is provided to execute unit tests for the system. It's output is printed to the terminal and an output text file called `test_output.txt`
+A file named `testcase_1.py` is provided to execute unit tests for the system. Its output is printed to the terminal and an output text file called `test_output.txt`
 
 From your terminal, compile and execute testcase_1.py
 
