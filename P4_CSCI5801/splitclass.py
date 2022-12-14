@@ -67,9 +67,24 @@ class UI(tkinter.Tk):
         self.sys_msg.place(x=360, y=90)
         
     def update_sys_msg(self, msg):
+        '''
+        Purpose: Replaces the message currently displayed on the upper right-hand side
+                with the passed in value.
+        Parameters:
+            msg: a string value that contains the message that the system will update the sys msg to
+        '''
         self.sys_msg.config(text = msg)
 
     def make_display(self, display_text, update_bool):
+        '''
+        Purpose: Creates the display text box. If the update_bool is false, the display only needs
+                to be created. If true, the display box must be destroyed before updating the text.
+        Parameters:
+            display_text: a string value that contains the text to be displayed. This will either represent the contents
+                        of a source code file or of a solution code file.
+            update_bool: a boolean value. If true, the display box is destroyed before recreation. If
+                        false, the text box is simply created with the text provided by display_text
+        '''
         if update_bool == True:
             self.display.destroy()
         self.display = Text(self.backend.ui, wrap=WORD, width=70, height=20)
@@ -77,6 +92,13 @@ class UI(tkinter.Tk):
         self.display.place(x = 80, y = 220)
 
     def import_layout(self):
+        '''
+        Purpose: Creates the UI layout for the import process. Contains two text entry boxes (one for
+                    the path to the source code file to be imported, the other is what name the user
+                    would like the problem set and solution code to be saved under). There is also a 
+                    button to confirm the entered information. Error messages are displayed to the user if their
+                    entries are invalid and the process will not proceed until they entered values are valid.
+        '''
         self.lbl = Label(self, text="Enter File Path (1st Box) and new Source Code name (2nd Box):", fg='blue') # button widget
         self.lbl.place(x=10, y=90)
 
@@ -98,6 +120,18 @@ class UI(tkinter.Tk):
         self.enter.place(x = 80, y = 180)
 
     def line_time(self, length):
+        '''
+        Purpose: Creates the UI for the line inclusion/exclusion step of the PPALMS process.
+                There are two entry boxes (one for the lower bound of the lines, one for the upper
+                bound of the lines). All lines between the lower and upper bound are included/excluded
+                if and only if the lower and upper bound values are valid (see PPALMS_BACKEND.in_ex_lines()).
+                The imported source code is displayed to the user. Valid bound indexing begins at 0.
+                Error messages are displayed to the user if their entries are invalid and the process will not 
+                proceed until they entered values are valid.
+        Parameters:
+            length: an integer value representing the number of lines in the file. This is for range checking
+                    for PPALMS_BACKEND.in_ex_lines()
+        '''
         self.lbl.destroy()
         self.lbl = Label(self, text="Enter Lower Bound (1st Box) and Upper Bound (2nd Box):", fg='blue') # button widget
         self.lbl.place(x=10, y=90)
@@ -138,6 +172,16 @@ class UI(tkinter.Tk):
         self.enter2.place(x = 180, y = 180)
 
     def tuple_ui(self):
+        '''
+        Purpose: Creates the UI for the tuple selection process. Like line_time(), the UI
+                contains two text entry boxes (one for the lower bound of the tuple, the other for
+                the upper bound of the tuple). The updated solution code (that which now does not contain 
+                the lines selected for exclusion in the previous process). There is a button to confirm 
+                the tuple and another button labeled 'LMS selection' that will move the process to the next 
+                stage when the user is done selecting tuples. Valid bound indexing begins at 0.
+                Error messages are displayed to the user if their entries are invalid and the process will not 
+                proceed until they entered values are valid.
+        '''
         self.lbl.destroy()
         self.lbl = Label(self, text="Enter Two Adjecent Line Numbers to 'tuple' them (tuples are only used in the question type 'reordering'):", fg='blue') # button widget
         self.lbl.place(x=10, y=90)
@@ -173,6 +217,19 @@ class UI(tkinter.Tk):
         self.enter2.destroy()
 
     def selection_ui(self, mode, options):
+        '''
+        Purpose: Creates the UI for either the LMS of qType selection process.
+                Contains a single entry box, a confirm choice button, and a label
+                that contains the valid options that the user may choose from. During
+                the LMS selection mode, pressing the 'confirm selection' button will
+                activate the validity check for LMS. During the qType selection mode, pressing
+                the 'confirm selection' button will activate the validity check for qType, and
+                upon approval the process will move on to the numStudents data collection prompt.
+        Parameters:
+            mode: a string value. Either 'LMS' or 'qType'. Determines which UI path must be taken.
+            options: a list of string values. Either represents the list of LMS the user can choose
+                    from or the list of question types available with their LMS.
+        '''
         options_text = ''
         try:
             self.next_step.destroy()
@@ -214,7 +271,13 @@ class UI(tkinter.Tk):
             pass
         
     def numStudents_ui(self):
-
+        '''
+        Purpose: Similar to selection_ui(), this UI creator collects the number of students that
+                the user will be creating the problem set for. This value is recorded and included in
+                the solution code configuration file. This UI contains a single entry box and 
+                a 'confrim selection' button. There is also a button that moves on to the final 
+                stage in the process upon the number of students being successfully recorded.
+        '''
         try:
             self.next_step.destroy()
         except:
@@ -258,6 +321,22 @@ class UI(tkinter.Tk):
         self.next_step.place(x = 360, y = 180)
     
     def finish_ui(self): #display a celebratory message
+        '''
+        Purpose: When this UI creator is called, that means that PPALMS has successfully created
+                all required elements of the prepartory process. That means that it has:
+                    - successfully imported source code
+                    - altered (if applicable) the source code using lines selected for inclusion
+                        or exclusion to create solution code
+                    - created a unique folder for the solution code to reside in under the solution_code
+                        folder
+                    - collected LMS, question type, and number of students from the user
+                    - created a configuration file with the necessary information for the 
+                        PPALMS problem set generation process to successfully create exam questions
+                        (LMS, qType, tuple_list or indentation_list or included_lines_list, numStudents)
+                At this point, the UI cleans up all of the unnecessary UI buttons and labels and updates
+                the system message to a celebratory one. The user may select the 'Start' button to begin
+                a new PPALMs process, or select 'Exit' to close the program.
+        '''
         try:
             self.lbl.destroy()
             self.instr1.destroy()
@@ -766,7 +845,7 @@ class PPALMS_BACKEND:
 
     def qType_select(self):
         '''
-        Purpose: Final step! User selects qType for the configuration file in the UI, but here
+        Purpose: User selects qType for the configuration file in the UI, but here
                 is where what qTypes they can choose from based on the LMS they chose
         '''
         self.ui.update_sys_msg("Question Type Selection: System Messages and \nErrors will appear here")
