@@ -21,9 +21,16 @@ Test_Create_Config_File (test_file_not_found) errors:
 None
 Test_Create_Config_File (test_fill_in_the_blank) errors: 
 None
+None
+Test_Create_Config_File (test_find_the_bug) errors: 
+None
+None
 Test_Create_Config_File (test_multiple_choice) errors: 
 None
+None
 Test_Create_Config_File (test_other_qType) errors: 
+None
+None
 Test_Create_Config_File (test_reordering) errors: 
 None
 None
